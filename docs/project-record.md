@@ -8,6 +8,11 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-13 — Models added, Blender render attempted
+**Changed:** Downloaded Quaternius "LowPoly RPG Characters" (CC0) and added Warrior (as Knight), Ranger (as Archer) and Wizard as FBX with textures to art/models, with license and source table. Updated make_sprites.py: attaches textures by material name, uses the Idle pose, 3/4 camera angle, can run inside Blender's window. Prototype now shows art/renders images when they exist and falls back to emoji. Done with Claude.
+**Checked:** Prototype in headless Chrome: no script errors, emoji fallback works when renders are missing. Render run in Blender 5.3 — NOT RUN to completion (screen became unavailable mid-attempt).
+**Next:** Run the render command in Terminal; review the images; push.
+
 ## 2026-11-13 — Art decision: Blender
 **Changed:** Decided to use Blender for the fighters' art, with free CC0 Quaternius models and a Python script (`art/blender/make_sprites.py`) that renders every fighter + gear variant as a PNG. 2D sprites first; real-time 3D with Three.js is a stretch goal. Added docs/art-pipeline.md, art/models/README.md, stack and source updates. Pros/cons discussed and script written with Claude.
 **Checked:** Script passes a Python syntax check. Rendering in Blender — NOT RUN (Blender not installed, models not downloaded).

@@ -68,6 +68,10 @@
   }
   .slot.filled { border-style: solid; }
   .slot .icon { font-size: 64px; line-height: 1; }
+  .art { display: block; object-fit: contain; }
+  .slot .art { width: 130px; height: 130px; }
+  .pick .art { width: 96px; height: 96px; margin: 0 auto; }
+  .modal .art { width: 140px; height: 140px; margin: 0 auto; }
   .slot .label { font-weight: 700; font-size: 18px; }
   .slot .gear { font-size: 12px; color: var(--muted); min-height: 16px; }
   .slot.won { transform: scale(1.06); box-shadow: 0 0 22px #6fcf7f66; border-color: var(--win); }
@@ -391,6 +395,15 @@
     return id ? item(id).color : null;
   }
 
+  // Rendered Blender sprite for a fighter + gear, with the emoji as a fallback
+  // if art/renders has not been generated yet.
+  function artHTML(f, gearId, sizeClass) {
+    var src = "../art/renders/" + f + "-" + (gearId || "starter") + ".png";
+    var fallback = '<div class=\'icon\'>' + INFO[f].icon + "</div>";
+    return '<img class="art ' + (sizeClass || "") + '" src="' + src + '" alt="' + INFO[f].name +
+      '" onerror="this.outerHTML=&quot;' + fallback + '&quot;">';
+  }
+
   function renderTop() {
     var r = RANKS[state.rank];
     $("rankName").textContent = r.name;
@@ -430,7 +443,7 @@
       b.style.borderColor = c || INFO[f].color;
       if (c) b.style.boxShadow = "0 0 14px " + c + "55";
       b.innerHTML =
-        '<div class="icon">' + INFO[f].icon + "</div>" +
+        artHTML(f, state.equipped[f]) +
         '<div class="name">' + INFO[f].name + "</div>" +
         '<div class="beats">beats ' + INFO[INFO[f].beats].name + "</div>" +
         '<div class="gear">' + gearLabel(f) + "</div>" +
@@ -447,7 +460,7 @@
   function fillSlot(el, f, gear) {
     el.className = "slot filled";
     el.style.borderColor = (gear && gearColor(f)) || INFO[f].color;
-    el.innerHTML = '<div class="icon">' + INFO[f].icon + '</div><div class="label">' + INFO[f].name +
+    el.innerHTML = artHTML(f, gear ? state.equipped[f] : null) + '<div class="label">' + INFO[f].name +
       '</div><div class="gear">' + (gear ? gearLabel(f) : "") + "</div>";
   }
   function resetSlots() {
@@ -529,7 +542,8 @@
         '<div class="big unlock-glow">✨</div>' +
         '<h2 class="serif unlock-glow">Ranked up: ' + RANKS[state.rank].name + "!</h2>" +
         "<p>+" + RANKUP_COINS + " bonus coins.<br>New gear unlocked for your " + INFO[unlockedItem.fighter].name + ":</p>" +
-        '<h3 class="serif" style="color:' + unlockedItem.color + '">' + INFO[unlockedItem.fighter].icon + " " + unlockedItem.name + "</h3>" +
+        artHTML(unlockedItem.fighter, unlockedItem.id) +
+        '<h3 class="serif" style="color:' + unlockedItem.color + '">' + unlockedItem.name + "</h3>" +
         "<p>From now on the computer <b>" + RANKS[state.rank].style + "</b>.</p>" +
         '<div class="actions">' +
           '<button class="btn primary" id="equipNow">Equip & play again</button>' +
