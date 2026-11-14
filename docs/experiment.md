@@ -1,11 +1,9 @@
 # One uncertain creative experiment
 
-An experiment is something you are not sure will work. Plan it here; run it later.
-
-- **Question:** What am I unsure about?
-- **Hypothesis:** I think ___ will make the game ___ for (audience).
-- **Smallest test:** What can I build or mock in about an hour to find out?
-- **Evidence I will collect:** (for example 3 playtests, a recording, notes)
-- **It worked if:**
-- **Fallback if it did not:**
+- **Question:** Does an opponent that learns the player's habits make rock paper scissors more fun, or just frustrating?
+- **Hypothesis:** I think showing the player a predictability score will make them want to replay to beat it, as long as the computer wins less than about 60% of rounds.
+- **Smallest test:** A single web page (no accounts, no saving) with the three buttons and a simple predictor that counts which move the player most often plays after their previous move. 20 rounds, then show the score.
+- **Evidence I will collect:** 3–5 classmates each play two matches. Record win rate, predictability score, whether they asked to play again, and one sentence on how it felt.
+- **It worked if:** most testers choose to play a second match and can say what they changed to be less predictable.
+- **Fallback if it did not:** make the opponent random, and keep the predictability score only as an after-match stat; or switch to Concept A (five moves).
 - **Status:** NOT RUN
