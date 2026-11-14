@@ -1,6 +1,6 @@
-# IS218 Individual Creative Game: Pattern Reader
+# IS218 Individual Creative Game: Arena Climb (working title)
 
-Rock paper scissors against a computer that learns your habits and tries to predict you.
+Knight, Archer, Wizard: a rock paper scissors game where you climb ranks against a computer that gets harder as you win, and winning unlocks gear to customize your three fighters.
 Repository: https://github.com/Jefferson2036-droid/is218-individual-game
 
 **Phase: Plan (research and decisions).** No game code yet; the build comes later.
@@ -9,15 +9,16 @@ Required product flow: **account → game → saved result → dashboard → acc
 
 | Plan item | File | Status |
 |---|---|---|
-| Two concepts compared | [docs/concepts.md](docs/concepts.md) | Draft, decision to confirm |
-| Audience chosen | [docs/audience.md](docs/audience.md) | Draft, evidence needed |
+| Two concepts compared | [docs/concepts.md](docs/concepts.md) | Decided: Arena Climb |
+| Audience chosen | [docs/audience.md](docs/audience.md) | Chosen; playtest evidence still needed |
+| Game design (rules, ranks, rewards) | [docs/game-design.md](docs/game-design.md) | Draft |
 | Flow specified | [docs/flow.md](docs/flow.md) | Draft |
-| Stack named | [docs/stack.md](docs/stack.md) | Proposed, not confirmed |
+| Stack named | [docs/stack.md](docs/stack.md) | Proposed, not confirmed against Canvas |
 | Five user stories | [docs/user-stories.md](docs/user-stories.md) | Draft |
 | Architecture sketch | [docs/architecture.md](docs/architecture.md) | Draft |
 | One uncertain creative experiment | [docs/experiment.md](docs/experiment.md) | Planned, NOT RUN |
-| Sources | [research/sources.md](research/sources.md) | TODO |
-| Project record | [docs/project-record.md](docs/project-record.md) | Started |
+| Sources | [research/sources.md](research/sources.md) | 12 sources |
+| Project record | [docs/project-record.md](docs/project-record.md) | Ongoing |
 
 Instructor example (research/planning only, not a required engine):
 https://github.com/kaw393939/is218-individual-game

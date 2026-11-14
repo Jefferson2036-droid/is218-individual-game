@@ -6,7 +6,7 @@ Installed on my Mac as of 2026-11-13: git 2.55.0, Python 3.12.14, VS Code. Node.
 
 | Layer | Proposed choice | Why | Alternative considered |
 |---|---|---|---|
-| Game front end | Plain HTML, CSS and JavaScript | Three buttons and a scoreboard do not need a game engine | Phaser |
+| Game front end | Plain HTML, CSS and JavaScript | Three fighter buttons, a scoreboard and simple win animations do not need a game engine | Phaser, if animations grow |
 | Dashboard / account pages | HTML pages served by the API, with a little JavaScript | Keeps one codebase | A separate React app |
 | API | FastAPI (Python) | Matches the Python + pytest work earlier in IS218 | Express (Node) |
 | Database | PostgreSQL + SQLAlchemy | Users and results are relational | SQLite for local development |

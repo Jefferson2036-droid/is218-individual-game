@@ -1,9 +1,15 @@
 # Audience
 
-**Status: draft. Jefferson to confirm.**
+**Chosen audience:** College students.
 
-**Chosen audience:** College students who play short browser games between classes.
-**Why this audience (evidence):** TODO. I am in this group and can playtest with classmates; add at least one source or a short note from asking 2–3 classmates.
-**When and where they play (device, session length):** Laptop or phone browser, 1–3 minutes at a time.
-**What they want from a saved result and a dashboard:** To see whether they are getting harder to predict, and to compare today with last time.
-**Who this game is not for:** Players looking for a long or story-driven game, or real-time multiplayer.
+**Why this audience:** They already use rock paper scissors to settle small decisions, they play short browser games between classes, and I can playtest with classmates.
+
+**When and where they play:** Laptop or phone browser, a few minutes at a time. One match should take about 1 minute.
+
+**What they want from a saved result and a dashboard:** Proof of progress: their rank, their streak, and what they have unlocked.
+
+**What keeps them playing:** The next rank and the next unlock always being close.
+
+**Who this game is not for:** Players wanting a long story, real-time play against other people, or rewards that affect winning (gear is cosmetic only).
+
+**Evidence still needed:** Ask 3–5 classmates whether they would play a second match for a cosmetic unlock. See experiment.md. NOT DONE.

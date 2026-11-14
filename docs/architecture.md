@@ -5,21 +5,23 @@ Draft. Update when the stack is confirmed.
 ```mermaid
 flowchart LR
   subgraph Browser
-    A[Account pages] --> G[Game]
+    A[Account pages] --> G[Match screen]
     G --> D[Dashboard]
-    D --> U[Account settings]
+    D --> R[Armory: equip and buy gear]
   end
   A -- register / login --> API
-  G -- save result --> API
-  D -- read my results --> API
-  U -- update account --> API
-  API[API: auth, results, users] --> DB[(Database: users, results)]
+  G -- start match, send each pick --> API
+  D -- read progress --> API
+  R -- equip / buy / update profile --> API
+  API[API: auth, matches, computer opponent, progress, armory] --> DB[(Database)]
 ```
 
 ## Data sketch
-- `users`: id, email, password_hash, display_name, created_at
-- `results`: id, user_id, wins, losses, ties, predictability_score, played_at
+- `users`: id, email, password_hash, display_name, rank, stars, coins, current_streak, created_at
+- `results`: id, user_id, outcome, rounds_won, rounds_lost, rank_at_start, stars_change, coins_earned, played_at
+- `items`: id, fighter (knight/archer/wizard), name, price, unlocked_by_rank (nullable)
+- `unlocks`: user_id, item_id, unlocked_at
+- `loadouts`: user_id, fighter, item_id
 
-## Open questions
-- Does the predictor run in the browser or on the API? (Browser is simpler; API is harder to cheat.)
-- How is a result protected from being faked by the client?
+## Key decision: the computer picks on the server
+The player sends their pick; the API makes the computer's pick and decides the round. If the browser decided rounds, a player could fake wins and unlock everything.

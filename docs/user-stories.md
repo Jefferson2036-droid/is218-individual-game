@@ -1,14 +1,12 @@
 # Five user stories
 
-For the chosen concept (Pattern Reader). Draft; adjust if the concept or audience changes.
-
-1. **Account.** As a new player, I want to create an account and log in, so that my matches are saved under my name.
-   - Accept: registering with a valid email and password creates a user; a duplicate email is rejected with a clear message; a wrong password does not log in.
-2. **Game.** As a logged-in player, I want to play a 20-round match of rock paper scissors against a computer that tries to predict me, so that I can test how predictable I am.
-   - Accept: each round I pick one of three moves and see the computer's move and who won; the round counter and running score are visible; the match ends after round 20.
-3. **Saved result.** As a player, I want my match saved when it ends, so that I do not lose it.
-   - Accept: finishing a match stores one result (wins, losses, ties, predictability score, date) linked to my account; it is still there after I log out and back in; an unfinished match is not saved.
-4. **Dashboard.** As a returning player, I want a dashboard of my past matches, so that I can see whether I am getting harder to predict.
-   - Accept: the dashboard lists only my matches, newest first; it shows my overall win rate and my predictability score per match; with no matches yet it shows a prompt to play.
-5. **Account update.** As a player, I want to change my display name and password, so that my account stays current.
-   - Accept: a new display name appears on the dashboard; a new password works at next login and the old one does not; changing the password requires the current one.
+1. **Account.** As a new player, I want to create an account and log in, so that my rank and unlocks are saved.
+   - Accept: registering with a valid email and password creates a user at Recruit rank with 0 coins and the starter look; a duplicate email is rejected with a clear message; a wrong password does not log in.
+2. **Game.** As a logged-in player, I want to play a best-of-5 match of Knight, Archer, Wizard against the computer, so that I can win and climb.
+   - Accept: each round I pick one of three fighters and see the computer's pick and the round winner; the rule triangle is visible the whole match; the match ends when one side wins 3 rounds; my equipped gear is shown on my fighters.
+3. **Saved result.** As a player, I want my match result saved with my rank change and reward, so that every win moves me forward.
+   - Accept: finishing a match saves the outcome, rounds won/lost and coins earned; a win adds a star and a loss removes one (never below the current rank's floor); reaching the star target moves me up a rank and unlocks an item; leaving mid-match saves nothing.
+4. **Dashboard.** As a returning player, I want a dashboard of my progress, so that I can see how close I am to the next rank and unlock.
+   - Accept: the dashboard shows my rank, stars toward the next rank, coins, win rate, current streak, my last 10 matches newest first, and my gear collection; with no matches yet it shows a prompt to play.
+5. **Account update.** As a player, I want to equip gear I have unlocked and change my profile details, so that my fighters and account look the way I want.
+   - Accept: I can equip any unlocked item on its fighter and see it in my next match; I cannot equip locked items; I can buy an item if I have enough coins; I can change my display name; changing my password requires the current one.

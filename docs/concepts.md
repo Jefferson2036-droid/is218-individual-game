@@ -1,25 +1,28 @@
 # Two concepts compared
 
-Both are variations of rock paper scissors against a computer opponent.
-**Status: draft written with Claude on 2026-11-13. Jefferson to review and confirm the decision.**
+Both are rock paper scissors games against a computer opponent.
 
-| | Concept A: Five-Move Duel | Concept B: Pattern Reader |
+| | Concept A: Pattern Reader | Concept B: Arena Climb |
 |---|---|---|
-| One-sentence pitch | Rock paper scissors with five moves instead of three, so ties are rarer and there is more to learn. | Classic three-move rock paper scissors against a computer that learns your habits and tries to predict you. |
-| Who it is for | Players who know the classic game and want more variety | Players who like trying to outsmart an opponent |
-| Core loop | Pick one of five moves → see who wins → next round, best of 7 | Pick one of three moves → see the computer's guess and the result → try to be less predictable, 20 rounds |
-| Length of one session | About 1 minute | About 2 minutes |
-| What gets saved as the "result" | Win/loss/tie count for the match, moves used | Win/loss/tie count, plus a "predictability" score (how often the computer guessed right) |
-| What the dashboard shows | Match history, win rate, win rate per move | Match history, win rate, predictability over time, most-repeated habit |
-| Similar games looked at | TODO: add to research/sources.md | TODO: add to research/sources.md |
-| Riskiest or least certain part | Players have to memorize ten win rules; may feel like homework | The learning opponent may feel unfair, or be too easy to beat once understood |
-| Fits the time available? | Yes: only the rules table changes | Yes, if the predictor stays simple (counting what the player did after their last move) |
+| One-sentence pitch | Classic rock paper scissors against a computer that learns your habits and scores how predictable you are. | Knight, Archer, Wizard: beat the computer to climb ranks, and unlock gear to customize your three fighters. |
+| The three moves | Rock, paper, scissors | Knight, Archer, Wizard (Knight charges down Archer, Archer shoots Wizard, Wizard's magic beats Knight) |
+| Who it is for | Players curious about how a computer predicts them | Competitive players who want a reason to keep playing |
+| Core loop | Play 20 rounds → see your predictability score | Play a best-of-5 match → gain or lose rank stars → earn coins → unlock and equip gear |
+| Why come back? | Try to lower your predictability score | Climb to the next rank, keep a win streak, unlock the next item |
+| What gets saved as the "result" | Wins, losses, ties, predictability score | Match outcome, rounds won/lost, rank before/after, coins earned |
+| What the dashboard shows | Match history and predictability over time | Current rank and progress, win rate, streak, match history, gear collection |
+| How the "account update" step fits | Change name or password only | Change name or password **and** equip unlocked gear (a natural reason to visit) |
+| Similar games looked at | NYT "You vs. the Computer" (sources 1–2) | Traditional themed variants: mushi-ken, kitsune-ken, Bear Hunter Ninja (sources 8–11); learning-opponent research reused for difficulty (sources 1–5) |
+| Riskiest part | The opponent may feel unfair; little reason to replay | Rules for new objects are less obvious than rock paper scissors; cosmetic rewards may not be enough motivation |
+| Fits the time available? | Yes | Yes, if gear is cosmetic only and the item list stays small (about 4 items per fighter) |
+
+A third idea, **Five-Move Duel** (rock paper scissors lizard Spock), was dropped early: it cuts ties but makes players learn ten rules (sources 6–7).
 
 ## Decision
-**Chosen concept (draft):** Concept B, Pattern Reader.
+**Chosen concept:** Concept B, Arena Climb. Decided 2026-11-13.
 
-**Why:** The saved result and the dashboard are more interesting: predictability gives the player a number to improve that is not just win rate, which gives the dashboard a reason to exist. The rules need no explanation because everyone knows the three moves. The uncertain part (does a learning opponent feel fun?) doubles as the required creative experiment.
+**Why:** Rock paper scissors is a competitive game people use to settle things, and Pattern Reader gave players no reason to keep going. Arena Climb adds that reason: ranks to climb, a computer that gets harder as you win, and rewards for winning. It also uses every step of the required flow, because equipping gear is a real reason to update the account.
 
-**What I am giving up by not choosing the other:** Concept A is simpler to build and has no risk of the opponent feeling unfair. Five moves could come back later as an optional mode.
+**What I am giving up:** Pattern Reader's "how predictable am I?" idea. Part of it survives: the higher ranks use the same human-pattern research (win-stay, lose-shift) to make the computer harder.
 
-**Evidence still needed:** look at two or three existing rock paper scissors games (including one with a learning opponent) and record them in research/sources.md. NOT DONE.
+**Known risk taken on:** Knight, Archer, Wizard rules are not as obvious as rock paper scissors. History shows confusing rules hurt these games (source 9: the mushi-ken slug). Response: the rule triangle is always shown on screen during a match.
