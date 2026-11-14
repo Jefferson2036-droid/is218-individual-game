@@ -8,6 +8,12 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-13 — First Blender renders
+**Changed:** Ran art/blender/make_sprites.py in Blender 5.3 (from Blender's Python console, run by Claude). It produced 9 sprites in art/renders: Knight, Archer and Wizard, each in starter look plus two gear variants.
+**Checked:** All 9 PNGs are 512×512 with transparent backgrounds; reviewed on a contact sheet: textured, idle pose, fully in frame, gear tints visible. Prototype loads the images (emoji fallback when they are missing).
+**Known issue:** The gear tint colors the whole model, including faces and hair. Next pass: tint only armor/cloth materials or texture regions.
+**Next:** Playtest with classmates; refine gear look.
+
 ## 2026-11-13 — Models added, Blender render attempted
 **Changed:** Downloaded Quaternius "LowPoly RPG Characters" (CC0) and added Warrior (as Knight), Ranger (as Archer) and Wizard as FBX with textures to art/models, with license and source table. Updated make_sprites.py: attaches textures by material name, uses the Idle pose, 3/4 camera angle, can run inside Blender's window. Prototype now shows art/renders images when they exist and falls back to emoji. Done with Claude.
 **Checked:** Prototype in headless Chrome: no script errors, emoji fallback works when renders are missing. Render run in Blender 5.3 — NOT RUN to completion (screen became unavailable mid-attempt).

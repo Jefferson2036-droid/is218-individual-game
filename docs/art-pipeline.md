@@ -31,4 +31,5 @@ From the repository root, with Blender installed in Applications:
 ```
 
 ## Status
-- Script written, syntax checked. Rendering — NOT RUN (Blender not installed yet, no models downloaded yet).
+- Script run successfully in Blender 5.3 on 2026-11-13: 9 sprites in art/renders.
+- Known issue: tint affects faces and hair too; next pass should tint only armor/cloth.

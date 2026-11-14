@@ -14,7 +14,7 @@ Required product flow: **account → game → saved result → dashboard → acc
 | Two concepts compared | [docs/concepts.md](docs/concepts.md) | Decided: Arena Climb |
 | Audience chosen | [docs/audience.md](docs/audience.md) | Chosen; playtest evidence still needed |
 | Game design (rules, ranks, rewards) | [docs/game-design.md](docs/game-design.md) | Draft |
-| Art pipeline (Blender) | [docs/art-pipeline.md](docs/art-pipeline.md) | Decided; script written, NOT RUN |
+| Art pipeline (Blender) | [docs/art-pipeline.md](docs/art-pipeline.md) | First 9 sprites rendered |
 | Flow specified | [docs/flow.md](docs/flow.md) | Draft |
 | Stack named | [docs/stack.md](docs/stack.md) | Proposed, not confirmed against Canvas |
 | Five user stories | [docs/user-stories.md](docs/user-stories.md) | Draft |
