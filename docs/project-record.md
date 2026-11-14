@@ -8,6 +8,11 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-13 — Retro battle-screen look
+**Changed:** Restyled the prototype as a retro handheld battle screen (my request): fighters on platforms, HP bars for rounds, typewriter text box, four-option command menu, pixelated Blender sprites, simple attack/hit/knockout animations. Game rules unchanged. Kept our own art and names; no material from other games. Built with Claude.
+**Checked:** Headless Chrome: no script errors; full matches played through the text flow; rank-up unlock screen with the Gold Armor sprite; equipped gear shows in battle; 500 simulated matches across all ranks; desktop and phone layouts checked from screenshots. Playtest with classmates — NOT RUN.
+**Next:** Playtest; refine gear tint so faces and hair keep their colors.
+
 ## 2026-11-13 — First Blender renders
 **Changed:** Ran art/blender/make_sprites.py in Blender 5.3 (from Blender's Python console, run by Claude). It produced 9 sprites in art/renders: Knight, Archer and Wizard, each in starter look plus two gear variants.
 **Checked:** All 9 PNGs are 512×512 with transparent backgrounds; reviewed on a contact sheet: textured, idle pose, fully in frame, gear tints visible. Prototype loads the images (emoji fallback when they are missing).

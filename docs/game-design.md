@@ -37,8 +37,15 @@ Same fighter on both sides is a tie, and the round is replayed. The triangle abo
 
 Plan for about 4 items per fighter at launch (12 total).
 
-## Art
+## Art and screen style
 Fighters are rendered from Blender (see docs/art-pipeline.md). Each gear item is a tinted version of the fighter's model.
+
+The match screen uses a **retro handheld battle-screen style** (inspired by classic turn-based handheld RPGs, but with our own art, names and layout; no characters, logos or screens from other games):
+- Rival's fighter on a grass platform top right, yours bottom left, each with an info panel and an HP bar (3 HP = the 3 round wins needed).
+- A text box at the bottom tells the round as it happens ("You send out KNIGHT!", "The rival sends out WIZARD!", "WIZARD's magic blasts KNIGHT!").
+- A four-option command menu: Knight, Archer, Wizard, Armory.
+- Fighters are the Blender renders shrunk and enlarged to look like pixel art.
+- Short animations: send-out slide, attack lunge, hit flash, knockout drop.
 
 ## Open design questions
 - Exact coin amounts and item prices (set during playtesting).
