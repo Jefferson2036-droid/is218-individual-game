@@ -14,3 +14,5 @@ Installed on my Mac as of 2026-11-13: git 2.55.0, Python 3.12.14, VS Code. Node.
 | Tests | pytest (API), Playwright (the five-step flow) | | |
 | CI | GitHub Actions | Gives linkable check runs for the project record | |
 | Containers | Docker Compose (API + database) | Same setup on any machine | Run both directly |
+| Art | Blender + Python (`bpy`) scripts, free CC0 Quaternius models | Scripted gear variants; regenerable; see docs/art-pipeline.md | Emoji / colored cards (prototype look) |
+| In-game 3D (stretch) | Three.js with glTF models | Same models, real-time 3D in the browser | Stay with rendered 2D sprites |

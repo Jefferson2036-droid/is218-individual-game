@@ -8,6 +8,11 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-13 — Art decision: Blender
+**Changed:** Decided to use Blender for the fighters' art, with free CC0 Quaternius models and a Python script (`art/blender/make_sprites.py`) that renders every fighter + gear variant as a PNG. 2D sprites first; real-time 3D with Three.js is a stretch goal. Added docs/art-pipeline.md, art/models/README.md, stack and source updates. Pros/cons discussed and script written with Claude.
+**Checked:** Script passes a Python syntax check. Rendering in Blender — NOT RUN (Blender not installed, models not downloaded).
+**Next:** Install Blender; download the Quaternius knight and RPG character packs into art/models; run the script and fix camera framing; record model sources in art/models/README.md.
+
 ## 2026-11-13 — Playtest prototype
 **Changed:** Added `prototype/index.html`, a single-page clickable prototype for the creative experiment (fighters, best-of-5 matches, four ranks with a smarter computer at each, coins, unlocks, armory, playtest counter). Built with Claude.
 **Checked:** Opened in headless Chrome: no console errors; rule logic checked (Wizard beats Knight, Knight beats Archer, Archer beats Wizard); win-stay/lose-shift and habit predictions checked on sample inputs; 800 simulated matches across all four ranks ran without errors; rank-up, equip, buy and mobile layout checked from screenshots. Playtest with classmates — NOT RUN.

@@ -37,6 +37,9 @@ Same fighter on both sides is a tie, and the round is replayed. The triangle abo
 
 Plan for about 4 items per fighter at launch (12 total).
 
+## Art
+Fighters are rendered from Blender (see docs/art-pipeline.md). Each gear item is a tinted version of the fighter's model.
+
 ## Open design questions
 - Exact coin amounts and item prices (set during playtesting).
 - Whether losing stars feels too punishing for a casual audience.

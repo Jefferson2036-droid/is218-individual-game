@@ -18,6 +18,11 @@ Gathered 2026-11-13 with Claude, through web search. Summaries are in my own wor
 | 11 | Campus.sg, "Rock paper scissors and ji gu pa are more than just games" — https://www.campus.sg/rock-paper-scissors-and-ji-gu-pa-are-more-than-just-games-campus-sg | 2026-11-13 | Modern "Bear, Hunter, Ninja" variant (hunter shoots bear, bear eats ninja, ninja beats hunter). Shows people enjoy re-themed versions with characters. | concepts.md |
 | 12 | Defector, "What is the correct way to count off in rock paper scissors" — https://defector.com/what-is-the-correct-way-to-count-off-in-rock-paper-scissors | 2026-11-13 | Indonesian variant: elephant beats human, human beats ant, ant scares elephant. Another living themed variant. | concepts.md |
 
+| 13 | Quaternius, "LowPoly RPG Characters" (OpenGameArt) — https://opengameart.org/content/lowpoly-rpg-characters | 2026-11-13 | Free animated low-poly wizard, warrior, rogue, monk and ranger, CC0 license. Planned source for the Wizard and Archer. | art-pipeline.md |
+| 14 | Quaternius, "LowPoly Animated Knight" — https://quaternius.itch.io/lowpoly-animated-knight | 2026-11-13 | Free animated knight, CC0. Planned source for the Knight. | art-pipeline.md |
+| 15 | Cinevva, "Free Medieval and Fantasy 3D Models" — https://app.cinevva.com/game-assets/free-medieval-3d-models | 2026-11-13 | Explains CC0 (public domain, no credit required) for Kenney, Quaternius, KayKit and others. | art-pipeline.md |
+| 16 | three.js docs, "Loading 3D Models" — https://threejs.org/manual/en/loading-3d-models | 2026-11-13 | How to load a glTF model into a browser scene with GLTFLoader. For the real-time 3D stretch goal. | stack.md |
+
 ## What the evidence says about the two concepts
 - **Re-theming the three objects has a long history** (sources 8–12), so Knight, Archer, Wizard is a known kind of variation, not a gimmick.
 - **The risk is unclear rules** (sources 8–9). The design answers this by always showing the rule triangle.
