@@ -6,4 +6,5 @@
 - **Evidence I will collect:** 3–5 classmates play until they choose to stop. Record matches played, whether they reached an unlock, whether they said they wanted the next one, and whether they ever misread who won a round (checks the rule triangle).
 - **It worked if:** most testers play 3 or more matches, and no more than one misreads the rules.
 - **Fallback if it did not:** make rewards visible earlier (unlock something after the first win), shorten the climb, or switch the fighters to Fire, Water, Plant if the rules confuse people.
-- **Status:** NOT RUN
+- **Prototype:** built 2026-11-13 at `prototype/index.html` (single page, no accounts, nothing saved). It has the three fighters, best-of-5 matches, star bar, all four ranks with the computer getting harder at each, coins, a rank-up unlock screen and a small armory. A counter at the bottom records matches played, wins, losses, rank-ups and how often the player chose "play again", for the playtest notes.
+- **Status:** prototype built; playtest NOT RUN

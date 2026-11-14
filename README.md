@@ -5,6 +5,8 @@ Repository: https://github.com/Jefferson2036-droid/is218-individual-game
 
 **Phase: Plan (research and decisions).** No game code yet; the build comes later.
 
+**Try the prototype:** open `prototype/index.html` in a browser (double-click it). No install needed.
+
 Required product flow: **account → game → saved result → dashboard → account update**
 
 | Plan item | File | Status |
@@ -16,7 +18,7 @@ Required product flow: **account → game → saved result → dashboard → acc
 | Stack named | [docs/stack.md](docs/stack.md) | Proposed, not confirmed against Canvas |
 | Five user stories | [docs/user-stories.md](docs/user-stories.md) | Draft |
 | Architecture sketch | [docs/architecture.md](docs/architecture.md) | Draft |
-| One uncertain creative experiment | [docs/experiment.md](docs/experiment.md) | Planned, NOT RUN |
+| One uncertain creative experiment | [docs/experiment.md](docs/experiment.md) | Prototype built ([prototype/index.html](prototype/index.html)); playtest NOT RUN |
 | Sources | [research/sources.md](research/sources.md) | 12 sources |
 | Project record | [docs/project-record.md](docs/project-record.md) | Ongoing |
 

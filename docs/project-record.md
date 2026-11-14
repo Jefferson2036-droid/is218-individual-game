@@ -8,6 +8,11 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-13 — Playtest prototype
+**Changed:** Added `prototype/index.html`, a single-page clickable prototype for the creative experiment (fighters, best-of-5 matches, four ranks with a smarter computer at each, coins, unlocks, armory, playtest counter). Built with Claude.
+**Checked:** Opened in headless Chrome: no console errors; rule logic checked (Wizard beats Knight, Knight beats Archer, Archer beats Wizard); win-stay/lose-shift and habit predictions checked on sample inputs; 800 simulated matches across all four ranks ran without errors; rank-up, equip, buy and mobile layout checked from screenshots. Playtest with classmates — NOT RUN.
+**Next:** Playtest with 3–5 classmates and record results in experiment.md.
+
 ## 2026-11-13 — Concept decided: Arena Climb (Knight, Archer, Wizard)
 **Changed:** Replaced the Pattern Reader draft with my own direction: rock paper scissors needs a reason to keep playing, so the game is now a rank climb against a computer that gets harder as you win, with cosmetic gear unlocks. I chose the audience (college students), the difficulty approach (gets harder as you win) and the theme (Knight, Archer, Wizard). Rewrote concepts, audience, flow, user stories, architecture and experiment; added game-design.md; added 12 sources. Drafting and source search done with Claude.
 **Checked:** Sources were found through web search; source 1 (NYT game) and source 5 (arXiv paper) not opened directly — NOT RUN. Experiment — NOT RUN. Stack not yet checked against Canvas — NOT RUN.
