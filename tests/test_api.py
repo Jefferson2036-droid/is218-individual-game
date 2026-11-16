@@ -2,43 +2,7 @@
 
 import pytest
 
-pytest.importorskip("fastapi")
-pytest.importorskip("sqlalchemy")
-pytest.importorskip("httpx")
-
-from fastapi.testclient import TestClient  # noqa: E402
-
-from app.db import Base, engine  # noqa: E402
-from app.deps import get_rng  # noqa: E402
-from app.main import app  # noqa: E402
-from tests.conftest import FixedRng  # noqa: E402
-
-ACCOUNT = {"email": "Player@Example.com", "password": "hunter2-hunter2", "display_name": "Jeff"}
-
-
-@pytest.fixture
-def client():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    app.dependency_overrides[get_rng] = lambda: FixedRng(index=0)   # the computer always sends Knight
-    with TestClient(app) as test_client:
-        yield test_client
-    app.dependency_overrides.clear()
-
-
-def register(client, **changes):
-    return client.post("/api/auth/register", json={**ACCOUNT, **changes})
-
-
-def play_match(client, pick):
-    """Play one whole match with the same pick. Wizard wins, Archer loses (the computer sends Knight)."""
-    match_id = client.post("/api/matches").json()["match"]["id"]
-    body = None
-    for _ in range(3):
-        response = client.post(f"/api/matches/{match_id}/rounds", json={"pick": pick})
-        assert response.status_code == 200, response.text
-        body = response.json()
-    return match_id, body
+from tests.helpers import ACCOUNT, play_match, register
 
 
 # ---- accounts ----

@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 from . import models  # noqa: F401  (registers the tables)
 from .db import Base, engine
-from .routers import auth, matches
+from .routers import account, armory, auth, dashboard, matches
 
 
 @asynccontextmanager
@@ -18,6 +18,9 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Arena Climb API", version="0.1.0", lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(matches.router)
+app.include_router(dashboard.router)
+app.include_router(account.router)
+app.include_router(armory.router)
 
 
 @app.get("/api/health", tags=["status"])

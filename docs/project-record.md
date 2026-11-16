@@ -8,6 +8,11 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-16 — Back end: dashboard, account update, armory
+**Changed:** Added API endpoints for the dashboard (progress, stats, last 10 matches, gear), account update (display name, password) and armory (buy with coins, equip, unequip). With the earlier work, all five flow steps now exist in the API; none has a web page yet. Written with Claude.
+**Checked:** 47 pure-logic tests still pass in Claude's workspace. The 17 new API tests (`tests/test_api_dashboard.py`) and the reorganized earlier API tests — NOT RUN yet on a machine with FastAPI installed. Expected total: 84.
+**Next:** Run `pytest` on my Mac; then build the pages (login, battle screen wired to the API, dashboard, armory) and a Playwright test of the whole flow.
+
 ## 2026-11-16 — Back end: accounts, match logic, saved results
 **Changed:** Started the build. Added `app/` (FastAPI): game rules, computer opponent, match and progression as plain Python in `app/game/`; accounts (register, log in, log out, /api/me); match API where the server decides every round and saves the result, stars, coins, rank-ups and unlocks when a match ends. Added Dockerfile, docker-compose.yml (API + PostgreSQL), requirements and tests. Architecture and stack docs updated to match what was built. Written with Claude.
 **Checked:** `pytest`: 47 tests passed for rules, opponent, match, progression, password hashing and tokens (run in Claude's workspace, Python 3.13). Then on my Mac (Python 3.12, fresh `.venv`): `pytest` — 67 passed, 1 warning (a Starlette deprecation notice about the httpx test client; no failures), including all 20 API test cases. `docker compose up --build` — NOT RUN yet (Docker Desktop was not running).

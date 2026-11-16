@@ -29,8 +29,8 @@ pytest
 | Account (register, log in, log out) | API built: `app/routers/auth.py` |
 | Game (best-of-5 match, server decides every round) | API built: `app/routers/matches.py`, rules in `app/game/` |
 | Saved result (stars, coins, rank-ups, unlocks) | Saved when a match ends |
-| Dashboard | Not built |
-| Account update (profile, armory) | Not built |
+| Dashboard (progress, stats, last 10 matches, gear) | API built: `app/routers/dashboard.py`; no page yet |
+| Account update (display name, password, buy and equip gear) | API built: `app/routers/account.py`, `app/routers/armory.py`; no page yet |
 | Battle screen connected to the API | Not built (prototype only) |
 
 Required product flow: **account → game → saved result → dashboard → account update**

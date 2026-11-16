@@ -17,3 +17,26 @@ class FixedRng:
 
     def randrange(self, n):
         return self.index % n
+
+
+import pytest  # noqa: E402
+
+
+@pytest.fixture
+def client():
+    """A test client with an empty database and a computer that always sends Knight."""
+    pytest.importorskip("fastapi")
+    pytest.importorskip("sqlalchemy")
+    pytest.importorskip("httpx")
+    from fastapi.testclient import TestClient
+
+    from app.db import Base, engine
+    from app.deps import get_rng
+    from app.main import app
+
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    app.dependency_overrides[get_rng] = lambda: FixedRng(index=0)
+    with TestClient(app) as test_client:
+        yield test_client
+    app.dependency_overrides.clear()
