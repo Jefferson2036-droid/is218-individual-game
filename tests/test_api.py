@@ -5,6 +5,20 @@ import pytest
 from tests.helpers import ACCOUNT, play_match, register
 
 
+# ---- pages ----
+
+def test_home_page_and_script_are_served(client):
+    home = client.get("/")
+    assert home.status_code == 200
+    assert "ARENA" in home.text and "/app.js" in home.text
+    script = client.get("/app.js")
+    assert script.status_code == 200 and "Arena Climb front end" in script.text
+
+
+def test_unknown_api_paths_are_not_swallowed_by_the_pages(client):
+    assert client.get("/api/nope").status_code == 404
+
+
 # ---- accounts ----
 
 def test_health(client):

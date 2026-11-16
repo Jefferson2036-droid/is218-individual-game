@@ -3,7 +3,7 @@
 Knight, Archer, Wizard: a rock paper scissors game where you climb ranks against a computer that gets harder as you win, and winning unlocks gear to customize your three fighters.
 Repository: https://github.com/Jefferson2036-droid/is218-individual-game
 
-**Phase: Build.** The back end (accounts and matches) is in `app/`; the playable screen is still the prototype and is not connected to it yet.
+**Phase: Build.** The game is playable end to end: account, battle, saved result, dashboard, account update.
 
 **Try the prototype:** open `prototype/index.html` in a browser (double-click it). No install needed.
 
@@ -13,7 +13,7 @@ Repository: https://github.com/Jefferson2036-droid/is218-individual-game
 ```
 docker compose up --build
 ```
-Then open http://localhost:8000/docs to try the API.
+Then open **http://localhost:8000** to play. The API's own test page is at http://localhost:8000/docs.
 
 **Run the tests (no Docker needed):**
 ```
@@ -26,12 +26,12 @@ pytest
 ## What is built so far
 | Flow step | Status |
 |---|---|
-| Account (register, log in, log out) | API built: `app/routers/auth.py` |
-| Game (best-of-5 match, server decides every round) | API built: `app/routers/matches.py`, rules in `app/game/` |
+| Account (register, log in, log out) | Built: page + `app/routers/auth.py` |
+| Game (best-of-5 match, server decides every round) | Built: battle screen + `app/routers/matches.py`, rules in `app/game/` |
 | Saved result (stars, coins, rank-ups, unlocks) | Saved when a match ends |
-| Dashboard (progress, stats, last 10 matches, gear) | API built: `app/routers/dashboard.py`; no page yet |
-| Account update (display name, password, buy and equip gear) | API built: `app/routers/account.py`, `app/routers/armory.py`; no page yet |
-| Battle screen connected to the API | Not built (prototype only) |
+| Dashboard (progress, stats, last 10 matches, gear) | Built: page + `app/routers/dashboard.py` |
+| Account update (display name, password, buy and equip gear) | Built: Account and Armory pages + `app/routers/account.py`, `app/routers/armory.py` |
+| Pages | `app/static/` (one page, plain JavaScript), served by the API at `/` |
 
 Required product flow: **account → game → saved result → dashboard → account update**
 

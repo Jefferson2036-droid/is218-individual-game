@@ -8,6 +8,11 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.
 **Next:** Fill in the two-concept comparison, choose the audience, confirm the stack against Canvas, write the experiment.
 
+## 2026-11-16 — Pages: the game is playable in the browser
+**Changed:** Added the game's pages (`app/static/`): sign in and register, the battle screen now driven by the API, dashboard, armory and account settings. The API serves them at `/`. Docker image now includes the pages and the fighter images; added `.dockerignore`. The Friday prototype in `prototype/` is unchanged and kept for reference. Written with Claude.
+**Checked:** Before this change, on my Mac: Docker Compose started the API and PostgreSQL, and a browser check against it registered an account, played and saved a match, and confirmed log-out (dashboard and armory endpoints were not in that build yet). For the pages: a headless-Chrome run of the whole flow (bad login, register, win three matches, rank up, equip unlocked gear, lose a match, dashboard, buy and equip in the armory, rename, change password, log out, old password refused, new password accepted, reload keeps the session) passed with no script errors — but against a stand-in server built on the real `app/game` code, not the real API. Display name `<b>Jeff</b>` shows as text. 47 pure-logic tests pass in Claude's workspace. Full `pytest` on my Mac (expected 86) and the pages against the real API in Docker — NOT RUN yet.
+**Next:** `pytest`, rebuild Docker, play at http://localhost:8000; then a Playwright test in the repo, GitHub Actions, restyle the battle screen as my own design.
+
 ## 2026-11-16 — Back end: dashboard, account update, armory
 **Changed:** Added API endpoints for the dashboard (progress, stats, last 10 matches, gear), account update (display name, password) and armory (buy with coins, equip, unequip). With the earlier work, all five flow steps now exist in the API; none has a web page yet. Written with Claude.
 **Checked:** 47 pure-logic tests still pass in Claude's workspace. The 17 new API tests (`tests/test_api_dashboard.py`) and the reorganized earlier API tests — NOT RUN yet on a machine with FastAPI installed. Expected total: 84.

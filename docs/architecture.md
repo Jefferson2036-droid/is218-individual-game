@@ -30,6 +30,9 @@ Changes from the Plan sketch:
 - `app/game/`: rules, computer opponent, match and progression as plain Python with no web or database code, so they are tested directly.
 - `app/routers/`: the API (accounts, matches). `app/models.py`: tables. `app/security.py`: password hashing (scrypt) and login tokens (JWT, sent as an HttpOnly cookie or a Bearer header).
 
+## Pages
+`app/static/index.html` and `app/static/app.js` are served by the API at `/`. One page with five views (sign in, battle, dashboard, armory, account). The browser only draws what the server answers: it never decides a round, awards coins or unlocks gear. Player-entered text (display name) is always inserted as text, never as HTML. Fighter images come from `art/renders`, served at `/art/renders`.
+
 ## API so far
 | Method and path | What it does |
 |---|---|

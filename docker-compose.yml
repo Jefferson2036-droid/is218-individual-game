@@ -1,5 +1,5 @@
 # Local development: the API plus a PostgreSQL database.
-#   docker compose up --build      then open http://localhost:8000/docs
+#   docker compose up --build      then open http://localhost:8000 to play (API docs at /docs)
 services:
   db:
     image: postgres:16
