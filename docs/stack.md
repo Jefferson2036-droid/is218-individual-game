@@ -1,6 +1,6 @@
 # Stack
 
-**Status: proposed, not confirmed.** Check the Canvas assignment for any required stack before committing to this.
+**Status: in use.** The back end is built with FastAPI, SQLAlchemy, PostgreSQL (SQLite for tests and Docker-free runs), pytest and Docker Compose. Still not checked against Canvas for a required stack.
 
 Installed on my Mac as of 2026-11-13: git 2.55.0, Python 3.12.14, VS Code. Node.js and Docker Desktop were installed the same evening; `docker --version` and `node --version` output not recorded here yet.
 
@@ -10,7 +10,7 @@ Installed on my Mac as of 2026-11-13: git 2.55.0, Python 3.12.14, VS Code. Node.
 | Dashboard / account pages | HTML pages served by the API, with a little JavaScript | Keeps one codebase | A separate React app |
 | API | FastAPI (Python) | Matches the Python + pytest work earlier in IS218 | Express (Node) |
 | Database | PostgreSQL + SQLAlchemy | Users and results are relational | SQLite for local development |
-| Auth | Hashed passwords + JWT or session cookie | | |
+| Auth | scrypt password hashes (Python standard library) + JWT in an HttpOnly cookie or Bearer header | No extra hashing package to install | bcrypt / argon2 |
 | Tests | pytest (API), Playwright (the five-step flow) | | |
 | CI | GitHub Actions | Gives linkable check runs for the project record | |
 | Containers | Docker Compose (API + database) | Same setup on any machine | Run both directly |
