@@ -10,8 +10,8 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
 
 ## 2026-11-16 — Back end: accounts, match logic, saved results
 **Changed:** Started the build. Added `app/` (FastAPI): game rules, computer opponent, match and progression as plain Python in `app/game/`; accounts (register, log in, log out, /api/me); match API where the server decides every round and saves the result, stars, coins, rank-ups and unlocks when a match ends. Added Dockerfile, docker-compose.yml (API + PostgreSQL), requirements and tests. Architecture and stack docs updated to match what was built. Written with Claude.
-**Checked:** `pytest`: 47 tests passed for rules, opponent, match, progression, password hashing and tokens (run in Claude's workspace, Python 3.13). API tests (`tests/test_api.py`, 20 test cases) — NOT RUN: FastAPI and SQLAlchemy were not available where the code was written. `docker compose up` — NOT RUN.
-**Next:** Run `pytest` and `docker compose up --build` on my Mac and fix anything that fails; then dashboard, account update and armory; then connect the battle screen.
+**Checked:** `pytest`: 47 tests passed for rules, opponent, match, progression, password hashing and tokens (run in Claude's workspace, Python 3.13). Then on my Mac (Python 3.12, fresh `.venv`): `pytest` — 67 passed, 1 warning (a Starlette deprecation notice about the httpx test client; no failures), including all 20 API test cases. `docker compose up --build` — NOT RUN yet (Docker Desktop was not running).
+**Next:** Start Docker Desktop and run `docker compose up --build`; then dashboard, account update and armory; then connect the battle screen.
 
 ## 2026-11-13 — Retro battle-screen look
 **Changed:** Restyled the prototype as a retro handheld battle screen (my request): fighters on platforms, HP bars for rounds, typewriter text box, four-option command menu, pixelated Blender sprites, simple attack/hit/knockout animations. Game rules unchanged. Kept our own art and names; no material from other games. Built with Claude.
