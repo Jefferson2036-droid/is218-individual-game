@@ -2,6 +2,9 @@
 
 Arena Climb is an IS218 creative project: a Knight / Archer / Wizard rock-paper-scissors game where the player climbs ranks against a computer that gets harder as they win. Read the plan before writing code; the owner (Jefferson) makes the decisions.
 
+## Current task
+Work on **`docs/tasks/review-2-slice.md`** — it lists exactly what to build now and what to leave for later.
+
 ## Read first
 1. `docs/dream-promise.md` – the Working Promise (what must work)
 2. `docs/user-stories.md` – five stories with acceptance checks (the definition of done)
