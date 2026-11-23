@@ -22,6 +22,17 @@ Arena Climb is an IS218 creative project: a Knight / Archer / Wizard rock-paper-
 - Each new account is randomly assigned experiment version A or B and keeps it; only version B shows the "N stars to <next rank>!" nudge.
 - Keep secrets in `.env` (never committed); keep `.venv`, caches and local databases out of Git.
 
+## Animation (required, but quick)
+A round must stay about 2 seconds, so animations are short and snappy. Use CSS keyframes and the Web Animations API; no animation library needed.
+- **Round sequence (~2 s total):** your fighter does a send-out slide (200 ms) → the rival's pick flips in (200 ms) → the winner does an attack lunge toward the loser (250 ms) → the loser flashes white twice and shakes (300 ms) → the round-win square fills with a small pop (scale 0.6 → 1, 150 ms) → the text line types out quickly (about 20 ms per character, skippable).
+- **Match end:** the loser drops and fades (knockout, 400 ms); the result pop-up scales from 0.95 to 1 with a fade (200 ms). In version B the earned star fills with a short pulse, then the "1 star to …" line slides up.
+- **Rank up:** a brief full-width gold banner sweeps across (600 ms) with the new rank name; no confetti loops.
+- **Buttons:** fighter buttons press down 2 px on click/keypress and show the gold focus ring; the chosen fighter's button stays highlighted until the round resolves.
+- **Pixel feel:** use `steps()` timing for sprite movement so it looks pixel-stepped; keep `image-rendering: pixelated`.
+- **Dashboard:** the star bar fills from left to right on load (400 ms); recent matches fade in with a 40 ms stagger.
+- **Rules:** animate only `transform` and `opacity`; never block input for longer than the round sequence; Enter/1/2/3 can skip the text typing.
+- **Reduced motion:** with `prefers-reduced-motion`, skip lunges, shakes and sweeps; show results instantly with a 150 ms fade. Round results are still announced through the `aria-live` line.
+
 ## Tests
 - Predict expected results from the rules in the docs, not from the code. Do not weaken or delete assertions to make tests pass.
 - Unit tests: rules (all 9 matchups), stars and rank math, each opponent strategy.
