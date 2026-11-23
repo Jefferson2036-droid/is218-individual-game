@@ -20,9 +20,10 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
   - 6 unit tests in `tests/test_match.py` — PASSED
   - 12 integration tests in `tests/test_flask_integration.py` — PASSED
   - 1 Playwright browser journey test in `tests/test_browser.py` — PASSED
+- GitHub Actions CI workflow passed green on push and PR: [Run #45271938637](https://github.com/Jefferson2036-droid/is218-individual-game/actions/runs/45271938637) — PASSED.
 - Playtest with classmates — NOT RUN.
 - Partner review — NOT RUN.
-**Next:** Verify GitHub Actions CI run on push, then merge PR #2.
+**Next:** Review 3 slice (dashboard, account maintenance with display name and password change session revocation).
 
 ## 2026-11-23 — Review 2: First Working Slice (Flask rebuild & Strategy pattern)
 **Changed:** Built the first working slice for Review 2 on branch `review-2-slice` (AI-assisted with Antigravity), tracked in Issue [#1](https://github.com/Jefferson2036-droid/is218-individual-game/issues/1) and Pull Request [#2](https://github.com/Jefferson2036-droid/is218-individual-game/pull/2):
