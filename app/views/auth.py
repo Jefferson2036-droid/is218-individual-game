@@ -28,7 +28,9 @@ def sign_in():
             db.session.add(login_sess)
             db.session.commit()
             next_url = request.args.get("next")
-            return redirect(next_url or url_for("play.play_screen"))
+            if next_url and next_url.startswith("/") and not next_url.startswith("//"):
+                return redirect(next_url)
+            return redirect(url_for("play.play_screen"))
         flash("Invalid username or password.", "error")
 
     return render_template("sign_in.html", form=form)
@@ -71,7 +73,7 @@ def sign_up():
     return render_template("sign_up.html", form=form)
 
 
-@auth_bp.route("/sign-out", methods=["GET", "POST"])
+@auth_bp.route("/sign-out", methods=["POST"])
 def sign_out():
     logout_user()
     session.clear()

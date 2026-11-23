@@ -3,6 +3,27 @@
 One entry per working session. Link the issue, the change (commit or PR) and the check.
 Never write that a check passed unless it was run; write "NOT RUN — reason".
 
+## 2026-11-23 — Review 2: Review Findings Fixed (Open Redirect, POST Sign-out, CSRF Test)
+**Changed:** Addressed three review findings on branch `review-2-slice` (AI-assisted with Antigravity):
+- Open redirect defense in `app/views/auth.py`: validated `next` parameter to only follow relative paths inside the application (starts with `/` and not `//`); otherwise redirects to `/play`.
+- Secure sign-out: converted `/sign-out` to POST-only with a CSRF-protected form button across the nav bars (`app/templates/battle.html`, `app/templates/results.html`, `app/templates/result_detail.html`). Updated `tests/helpers.py` to use POST.
+- Tests updated & added:
+  - Added integration test `test_next_parameter_ignores_offsite_urls` verifying `?next=https://example.com` and `?next=//evil.com` redirect internally to `/play`.
+  - Added integration test `test_sign_out_is_post_only` verifying GET yields 405 while POST succeeds.
+  - Added integration test `test_pick_without_csrf_token_header_is_rejected_when_csrf_enabled` verifying picks without `X-CSRFToken` are rejected with HTTP 400 when CSRF is enabled, and succeed with the token.
+  - In `tests/test_browser.py`, updated the assertion to specifically verify the saved match's actual score (`3 – 0`) appears on `/results`.
+**Checked:**
+- Full test suite passed locally: `pytest` — 54 passed, 1 warning (deprecation notice about pytest fixture inheritance) in 8.20s:
+  - 12 unit tests in `tests/test_rules.py` — PASSED
+  - 8 unit tests in `tests/test_progression.py` — PASSED
+  - 15 unit tests in `tests/test_opponent.py` — PASSED
+  - 6 unit tests in `tests/test_match.py` — PASSED
+  - 12 integration tests in `tests/test_flask_integration.py` — PASSED
+  - 1 Playwright browser journey test in `tests/test_browser.py` — PASSED
+- Playtest with classmates — NOT RUN.
+- Partner review — NOT RUN.
+**Next:** Verify GitHub Actions CI run on push, then merge PR #2.
+
 ## 2026-11-23 — Review 2: First Working Slice (Flask rebuild & Strategy pattern)
 **Changed:** Built the first working slice for Review 2 on branch `review-2-slice` (AI-assisted with Antigravity), tracked in Issue [#1](https://github.com/Jefferson2036-droid/is218-individual-game/issues/1) and Pull Request [#2](https://github.com/Jefferson2036-droid/is218-individual-game/pull/2):
 - Replaced the legacy FastAPI layer with Flask (`app/__init__.py`, `app/models.py`, `app/forms.py`, `app/views/auth.py`, `app/views/play.py`, `app/views/results.py`).

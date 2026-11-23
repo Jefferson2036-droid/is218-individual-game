@@ -149,7 +149,10 @@
 <nav class="top-nav" aria-label="Main">
   <a href="{{ url_for('play.play_screen') }}" class="active">Play</a>
   <a href="{{ url_for('results.results_list') }}">Saved Results</a>
-  <a href="{{ url_for('auth.sign_out') }}" id="sign-out-btn">Sign out</a>
+  <form method="POST" action="{{ url_for('auth.sign_out') }}" style="margin: 0; display: inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" id="sign-out-btn" style="background: none; border: none; color: var(--text); font-family: inherit; font-size: 17px; height: 44px; padding: 0 8px; cursor: pointer;">Sign out</button>
+  </form>
 </nav>
 
 <!-- Rank & Score Bar -->

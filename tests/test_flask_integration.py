@@ -188,3 +188,110 @@ def test_invalid_pick_returns_400_with_helpful_message(client):
     res_empty = client.post(f"/play/{match_id}/pick", json={})
     assert res_empty.status_code == 400
     assert "Invalid pick" in res_empty.json["error"]
+
+
+def test_next_parameter_ignores_offsite_urls(client):
+    sign_up(client, username="redirect_test_user", password="password123")
+    sign_out(client)
+
+    # Attempt to sign in with an offsite next parameter
+    res = client.post(
+        "/sign-in?next=https://example.com",
+        data={"username": "redirect_test_user", "password": "password123"},
+        follow_redirects=False,
+    )
+    assert res.status_code == 302
+    assert res.headers["Location"].endswith("/play")
+    assert "example.com" not in res.headers["Location"]
+
+    # Also test protocol-relative offsite url //evil.com
+    sign_out(client)
+    res_proto = client.post(
+        "/sign-in?next=//evil.com",
+        data={"username": "redirect_test_user", "password": "password123"},
+        follow_redirects=False,
+    )
+    assert res_proto.status_code == 302
+    assert res_proto.headers["Location"].endswith("/play")
+    assert "evil.com" not in res_proto.headers["Location"]
+
+
+def test_sign_out_is_post_only(client):
+    sign_up(client, username="post_signout_user", password="password123")
+    # GET /sign-out should be 405 Method Not Allowed
+    get_res = client.get("/sign-out")
+    assert get_res.status_code == 405
+
+    # POST /sign-out should succeed and redirect to /sign-in
+    post_res = client.post("/sign-out", follow_redirects=False)
+    assert post_res.status_code == 302
+    assert post_res.headers["Location"].endswith("/sign-in")
+
+
+def test_pick_without_csrf_token_header_is_rejected_when_csrf_enabled():
+    import re
+    from app import create_app
+    from app.extensions import db
+    from app.models import Match, User, now_utc
+
+    csrf_app = create_app(
+        {
+            "TESTING": True,
+            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+            "WTF_CSRF_ENABLED": True,
+            "SECRET_KEY": "csrf-test-secret-key",
+        }
+    )
+
+    with csrf_app.app_context():
+        db.create_all()
+        with csrf_app.test_client() as csrf_client:
+            # 1. Fetch sign-up page to get CSRF token from HTML
+            get_res = csrf_client.get("/sign-up")
+            assert get_res.status_code == 200
+            token_match = re.search(r'name="csrf_token"[^>]*value="([^"]+)"', get_res.text)
+            assert token_match is not None
+            token = token_match.group(1)
+
+            # 2. Sign up with CSRF token
+            signup_res = csrf_client.post(
+                "/sign-up",
+                data={"username": "csrf_player", "password": "password123", "csrf_token": token},
+                follow_redirects=True,
+            )
+            assert signup_res.status_code == 200
+
+            # 3. Create a match in the database for this user
+            user = db.session.scalar(db.select(User).filter_by(username="csrf_player"))
+            match = Match(
+                user_id=user.id,
+                status="in_progress",
+                you=0,
+                cpu=0,
+                started_at=now_utc(),
+            )
+            db.session.add(match)
+            db.session.commit()
+            match_id = match.id
+
+            # 4. Attempt pick WITHOUT X-CSRFToken header -> MUST BE REJECTED with 400
+            pick_res_no_csrf = csrf_client.post(
+                f"/play/{match_id}/pick",
+                json={"pick": "knight"},
+            )
+            assert pick_res_no_csrf.status_code == 400
+
+            # 5. Fetch a page to get the valid token for the session and send with X-CSRFToken header -> MUST SUCCEED
+            play_page = csrf_client.get("/play")
+            meta_token_match = re.search(r'name="csrf-token"\s+content="([^"]+)"', play_page.text)
+            assert meta_token_match is not None
+            header_token = meta_token_match.group(1)
+
+            pick_res_with_csrf = csrf_client.post(
+                f"/play/{match_id}/pick",
+                json={"pick": "knight"},
+                headers={"X-CSRFToken": header_token},
+            )
+            assert pick_res_with_csrf.status_code == 200
+        db.session.remove()
+        db.drop_all()

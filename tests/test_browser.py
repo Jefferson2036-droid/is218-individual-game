@@ -90,7 +90,9 @@ def test_player_journey_mobile_viewport(live_server, page):
     page.click("#modal-results-btn")
     page.wait_for_url(f"{live_server}/results")
     assert "SAVED MATCHES" in page.content()
-    assert "3 – 0" in page.content() or "W" in page.content()
+    # Verify the saved match's actual score appears on /results
+    match_score = page.locator("a[href*='/results/'] span").nth(1).text_content().strip()
+    assert match_score == "3 – 0"
 
     # 6. Sign out
     page.click("#sign-out-btn")

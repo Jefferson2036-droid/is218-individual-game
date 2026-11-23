@@ -18,4 +18,4 @@ def sign_in(client, username="jeff", password="password123"):
 
 
 def sign_out(client):
-    return client.get("/sign-out", follow_redirects=True)
+    return client.post("/sign-out", follow_redirects=True)
