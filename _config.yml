@@ -1,0 +1,19 @@
+title: Arena Climb · programming research
+description: Research, decisions and plan for an IS218 creative project by Jefferson Rodas
+theme: jekyll-theme-cayman
+exclude:
+  - app
+  - tests
+  - prototype
+  - art/models
+  - art/blender
+  - .venv
+  - .pytest_cache
+  - requirements.txt
+  - requirements-dev.txt
+  - Dockerfile
+  - docker-compose.yml
+  - pytest.ini
+  - .env.example
+  - AGENTS.md
+  - README.md
