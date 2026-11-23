@@ -4,7 +4,7 @@ One entry per working session. Link the issue, the change (commit or PR) and the
 Never write that a check passed unless it was run; write "NOT RUN — reason".
 
 ## 2026-11-23 — Review 2: First Working Slice (Flask rebuild & Strategy pattern)
-**Changed:** Built the first working slice for Review 2 on branch `review-2-slice` (AI-assisted with Antigravity):
+**Changed:** Built the first working slice for Review 2 on branch `review-2-slice` (AI-assisted with Antigravity), tracked in Issue [#1](https://github.com/Jefferson2036-droid/is218-individual-game/issues/1) and Pull Request [#2](https://github.com/Jefferson2036-droid/is218-individual-game/pull/2):
 - Replaced the legacy FastAPI layer with Flask (`app/__init__.py`, `app/models.py`, `app/forms.py`, `app/views/auth.py`, `app/views/play.py`, `app/views/results.py`).
 - Removed coins and items (`app/game/items.py` removed; coin fields purged from `app/game/progression.py`). Preserved ranks, stars, floor rule, and win streaks.
 - Implemented the Strategy pattern in `app/game/opponent.py` (`RandomStrategy`, `WinStayLoseShiftStrategy`, `PredictorStrategy`, `ChampionStrategy`) with a rank factory. Preserved procedural baseline in `app/game/opponent_baseline.py` and documented findings in `docs/pattern-experiment.md`.
@@ -22,9 +22,10 @@ Never write that a check passed unless it was run; write "NOT RUN — reason".
   - 6 unit tests in `tests/test_match.py` (best-of-5 match rules, simulation) — PASSED
   - 9 integration tests in `tests/test_flask_integration.py` (auth, duplicate username rejection, wrong password rejection, full match saved, abandoned match exclusion, server-authority over client results, cross-user 404 isolation, session persistence) — PASSED
   - 1 Playwright browser journey test in `tests/test_browser.py` (sign up, play match with keyboard 1/2/3, result modal, view /results, sign out on 375px mobile viewport) — PASSED
+- GitHub Actions CI workflow passed green on push and PR: [Run #45270339913](https://github.com/Jefferson2036-droid/is218-individual-game/actions/runs/45270339913) — PASSED.
 - Playtest with classmates — NOT RUN.
 - Partner review — NOT RUN.
-**Next:** Push branch `review-2-slice`, open pull request to merge into `main`, and verify GitHub Actions green run.
+**Next:** Review 3 slice (dashboard, account maintenance with display name and password change session revocation).
 
 ## 2026-11-23 — Plan re-done, scope narrowed, stack changed to Flask
 **Changed:** Re-did the Plan one decision at a time. Kept Arena Climb but cut coins, gear and the armory to a new backlog. Compared two audiences (A: 2048-style quick competitor, B1: Wordle-style daily player) and chose A. Wrote Dream / Working Promise; chose the "almost there" A/B nudge as the creative experiment and Strategy vs if/else as the pattern experiment. Changed the stack to Flask + Flask-Login because the first build's hand-made scrypt/JWT auth did not meet the "supported authentication component" rule. Rewrote the five stories (a saved result is one match; dashboard shows wins and losses only), flow and architecture (in-progress match in the database, rounds table). Planned keyboard, phone and privacy checks; chose GoatCounter and matches-per-session. Options laid out with Claude; I made each choice.
