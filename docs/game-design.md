@@ -25,28 +25,18 @@ Same fighter on both sides is a tie, and the round is replayed. The triangle abo
 - Three wins in a row: bonus star.
 - The computer at every rank keeps some randomness, so it can always be beaten.
 
-## Rewards (cosmetic only)
-- Every match win earns coins; ranking up gives a bigger coin bonus and unlocks one item.
-- Coins buy gear in the armory. Gear changes how a fighter looks, never whether it wins.
-
-| Fighter | Starter look | Example unlocks |
-|---|---|---|
-| Knight | Plain steel armor | Gold armor, dragon shield, black knight set |
-| Archer | Green cloak | Shadow cloak, flame bow, elven set |
-| Wizard | Blue robe | Storm staff, purple spell color, archmage set |
-
-Plan for about 4 items per fighter at launch (12 total).
+## Rewards
+For this term the reward is the climb itself: stars, rank-ups and a visible "next rank" bar. Coins, gear and the armory were cut on 2026-11-23 and moved to the [backlog](backlog.md).
 
 ## Art and screen style
-Fighters are rendered from Blender (see docs/art-pipeline.md). Each gear item is a tinted version of the fighter's model.
+Fighters are rendered from Blender (see docs/art-pipeline.md). Gear variants (tinted models) are backlog only.
 
 The match screen uses a **retro handheld battle-screen style** (inspired by classic turn-based handheld RPGs, but with our own art, names and layout; no characters, logos or screens from other games):
 - Rival's fighter on a grass platform top right, yours bottom left, each with an info panel and an HP bar (3 HP = the 3 round wins needed).
 - A text box at the bottom tells the round as it happens ("You send out KNIGHT!", "The rival sends out WIZARD!", "WIZARD's magic blasts KNIGHT!").
-- A four-option command menu: Knight, Archer, Wizard, Armory.
+- A three-option command menu: Knight, Archer, Wizard.
 - Fighters are the Blender renders shrunk and enlarged to look like pixel art.
 - Short animations: send-out slide, attack lunge, hit flash, knockout drop.
 
 ## Open design questions
-- Exact coin amounts and item prices (set during playtesting).
 - Whether losing stars feels too punishing for a casual audience.

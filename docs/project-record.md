@@ -3,6 +3,12 @@
 One entry per working session. Link the issue, the change (commit or PR) and the check.
 Never write that a check passed unless it was run; write "NOT RUN — reason".
 
+## 2026-11-23 — Plan re-done, scope narrowed, stack changed to Flask
+**Changed:** Re-did the Plan one decision at a time. Kept Arena Climb but cut coins, gear and the armory to a new backlog. Compared two audiences (A: 2048-style quick competitor, B1: Wordle-style daily player) and chose A. Wrote Dream / Working Promise; chose the "almost there" A/B nudge as the creative experiment and Strategy vs if/else as the pattern experiment. Changed the stack to Flask + Flask-Login because the first build's hand-made scrypt/JWT auth did not meet the "supported authentication component" rule. Rewrote the five stories (a saved result is one match; dashboard shows wins and losses only), flow and architecture (in-progress match in the database, rounds table). Planned keyboard, phone and privacy checks; chose GoatCounter and matches-per-session. Options laid out with Claude; I made each choice.
+**Checked:** Plan docs only; no code changed. Partner review — NOT RUN. Playtest — NOT RUN. GoatCounter and Plausible pricing — NOT CHECKED on their sites.
+Front end planned (server-rendered pages, retro pixel castle-courtyard look, quick rounds, result pop-up, random A/B per account) and five phone screens mocked up as static HTML in docs/mockups/. Added AGENTS.md for the Flask rebuild with a coding agent.
+**Next:** Publish the research site; partner review in class Nov 25 with the A/B playtest; rebuild on Flask.
+
 ## 2026-11-13 — Repository scaffold
 **Changed:** Created the repo structure and Plan templates (README, docs/, research/, PR and issue templates).
 **Checked:** Markdown links between files — NOT RUN. No automated checks exist yet.

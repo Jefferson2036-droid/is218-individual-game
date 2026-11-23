@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arena Climb – Account</title>
+<!-- Static design mockup (2026-11-23). Reference for implementation, not production code. -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Pixelify+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#16182A}
+a{color:#F2B84B}a:hover{color:#FFD27A}
+</style>
+<style>body{display:flex;justify-content:center}</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #16182A; color: #F4EBD0; font-family: 'Pixelify Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+  <nav aria-label="Main" style="height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; border-bottom: 3px solid #3B4163">
+    <a href="battle.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F4EBD0; text-decoration: none; font-size: 17px">Play</a>
+    <a href="dashboard.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F4EBD0; text-decoration: none; font-size: 17px">Dashboard</a>
+    <a href="account.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F2B84B; text-decoration: none; font-size: 17px; font-weight: 600; border-bottom: 3px solid #F2B84B; box-sizing: border-box">Account</a>
+    <a href="sign-in.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F4EBD0; text-decoration: none; font-size: 17px">Sign out</a>
+  </nav>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 18px 16px">
+    <h1 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 14px">ACCOUNT</h1>
+    <form style="display: flex; flex-direction: column; gap: 12px; padding: 16px; background: #262A40; border: 3px solid #3B4163">
+      <h2 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 11px; color: #F2B84B">DISPLAY NAME</h2>
+      <label for="dn" style="display: flex; flex-direction: column; gap: 6px; font-size: 17px">Shown on your dashboard and in battle
+        <input id="dn" type="text" value="Jeff" style="height: 48px; box-sizing: border-box; padding: 0 14px; font-family: 'Pixelify Sans', sans-serif; font-size: 18px; color: #F4EBD0; background: #16182A; border: 3px solid #3B4163; border-radius: 0">
+      </label>
+      <p style="margin: 0; font-size: 16px; color: #C9C2AC">1–20 characters.</p>
+      <button type="button" style="height: 48px; background: #F2B84B; color: #16182A; border: 0; font-family: 'Press Start 2P', monospace; font-size: 11px; box-shadow: 4px 4px 0 #9C6B17; cursor: pointer">SAVE NAME</button>
+    </form>
+    <form style="display: flex; flex-direction: column; gap: 12px; padding: 16px; background: #262A40; border: 3px solid #3B4163">
+      <h2 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 11px; color: #F2B84B">CHANGE PASSWORD</h2>
+      <label for="cp" style="display: flex; flex-direction: column; gap: 6px; font-size: 17px">Current password
+        <input id="cp" type="password" value="password1" style="height: 48px; box-sizing: border-box; padding: 0 14px; font-size: 18px; color: #F4EBD0; background: #16182A; border: 3px solid #E8835A; border-radius: 0">
+      </label>
+      <p role="alert" style="margin: -4px 0 0; font-size: 16px; color: #F0A07E">That isn't your current password.</p>
+      <label for="np" style="display: flex; flex-direction: column; gap: 6px; font-size: 17px">New password
+        <input id="np" type="password" value="newpassword" style="height: 48px; box-sizing: border-box; padding: 0 14px; font-size: 18px; color: #F4EBD0; background: #16182A; border: 3px solid #3B4163; border-radius: 0">
+      </label>
+      <label for="cf" style="display: flex; flex-direction: column; gap: 6px; font-size: 17px">Confirm new password
+        <input id="cf" type="password" value="newpassword" style="height: 48px; box-sizing: border-box; padding: 0 14px; font-size: 18px; color: #F4EBD0; background: #16182A; border: 3px solid #3B4163; border-radius: 0">
+      </label>
+      <p style="margin: 0; font-size: 16px; color: #C9C2AC">Changing your password signs you out on your other devices.</p>
+      <button type="button" style="height: 48px; background: #F2B84B; color: #16182A; border: 0; font-family: 'Press Start 2P', monospace; font-size: 11px; box-shadow: 4px 4px 0 #9C6B17; cursor: pointer">UPDATE PASSWORD</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

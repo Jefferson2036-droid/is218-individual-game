@@ -1,10 +1,17 @@
-# One uncertain creative experiment
+# Creative experiment: the "almost there" nudge
 
-- **Question:** Will climbing ranks and unlocking cosmetic gear make college students want to play another match, or is cosmetic-only reward not enough?
-- **Hypothesis:** If a player is one win from a rank-up or unlock when a match ends, most will choose to play again.
-- **Smallest test:** A single clickable page (no accounts, no saving): Knight, Archer, Wizard buttons, a best-of-5 match, a star bar, and a fake "Unlocked: Gold Armor!" screen after a rank-up. Paper sketches of the gear are fine.
-- **Evidence I will collect:** 3–5 classmates play until they choose to stop. Record matches played, whether they reached an unlock, whether they said they wanted the next one, and whether they ever misread who won a round (checks the rule triangle).
-- **It worked if:** most testers play 3 or more matches, and no more than one misreads the rules.
-- **Fallback if it did not:** make rewards visible earlier (unlock something after the first win), shorten the climb, or switch the fighters to Fire, Water, Plant if the rules confuse people.
-- **Prototype:** built 2026-11-13 at `prototype/index.html` (single page, no accounts, nothing saved). It has the three fighters, best-of-5 matches, star bar, all four ranks with the computer getting harder at each, coins, a rank-up unlock screen and a small armory. A counter at the bottom records matches played, wins, losses, rank-ups and how often the player chose "play again", for the playtest notes.
-- **Status:** prototype built; playtest NOT RUN
+Chosen 2026-11-23 (over a "smarter computer feels fair?" test).
+
+- **Question:** With gear out of scope, does showing how close the next rank is ("1 star to Squire!") on the result screen make players start another match?
+- **Why it is uncertain:** Cutting coins and gear removed the original reward. Nobody knows yet whether rank alone pulls players back. This is the risk taken on in concepts.md.
+- **Hypothesis:** Players who see the progress nudge choose "play again" more often than players who see only the result.
+- **A/B setup:**
+  - **A (control):** result screen shows win/lose and the round score only.
+  - **B (nudge):** same screen plus the star bar and "N stars to <next rank>!"
+  - Each playtester is assigned A or B before they start; everything else is identical.
+- **Playtest:** 4–6 classmates on their own phones, Wednesday Nov 25 class. Each plays until they choose to stop or 5 minutes pass.
+- **What I record per tester:** version (A/B), matches played, how many times they chose "play again", anything they said about the rank, and any round where they misread who won (checks the Knight/Archer/Wizard rules).
+- **Stopping point:** one playtest session. With this few testers the result is a signal, not proof, and is written up that way.
+- **It worked if:** B testers play noticeably more matches than A testers, and no more than one tester misreads a round.
+- **Fallback if it did not:** give a rank-up after the very first win and shorten the climb (fewer stars per rank). If the rules confuse people, keep the triangle bigger on screen or switch the theme to Fire, Water, Plant.
+- **Result:** NOT RUN.

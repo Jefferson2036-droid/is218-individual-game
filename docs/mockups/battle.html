@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arena Climb – Battle</title>
+<!-- Static design mockup (2026-11-23). Reference for implementation, not production code. -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;family=Pixelify+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#16182A}
+a{color:#F2B84B}a:hover{color:#FFD27A}
+.px{image-rendering:pixelated}
+.wall{background-color:#2B2F45;background-image:linear-gradient(#20233A 2px,transparent 2px),linear-gradient(90deg,#20233A 2px,transparent 2px);background-size:48px 24px}
+.floor{background-color:#3A3A4F;background-image:linear-gradient(#2E2E42 2px,transparent 2px),linear-gradient(90deg,#2E2E42 2px,transparent 2px);background-size:32px 32px}
+</style>
+<style>body{display:flex;justify-content:center}</style>
+</head>
+<body>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #16182A; color: #F4EBD0; font-family: 'Pixelify Sans', system-ui, sans-serif; display: flex; flex-direction: column">
+  <nav aria-label="Main" style="height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #16182A; border-bottom: 3px solid #3B4163">
+    <a href="battle.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F2B84B; text-decoration: none; font-size: 17px; font-weight: 600; border-bottom: 3px solid #F2B84B; box-sizing: border-box">Play</a>
+    <a href="dashboard.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F4EBD0; text-decoration: none; font-size: 17px">Dashboard</a>
+    <a href="account.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F4EBD0; text-decoration: none; font-size: 17px">Account</a>
+    <a href="sign-in.html" style="display: flex; align-items: center; height: 44px; padding: 0 8px; color: #F4EBD0; text-decoration: none; font-size: 17px">Sign out</a>
+  </nav>
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: #262A40">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="font-family: 'Press Start 2P', monospace; font-size: 11px; color: #F2B84B">SQUIRE</span>
+      <span aria-label="2 of 4 stars" style="font-size: 18px; letter-spacing: 2px; color: #F2B84B">★★<span style="color: #565C80">★★</span></span>
+    </div>
+    <span style="font-family: 'Press Start 2P', monospace; font-size: 11px">YOU 2 – 1 RIVAL</span>
+  </div>
+  <div style="position: relative; height: 430px; overflow: hidden">
+    <div class="wall" style="position: absolute; left: 0; right: 0; top: 0; height: 170px; border-bottom: 4px solid #1B1D2E"></div>
+    <div style="position: absolute; top: 30px; left: 120px; width: 10px; height: 16px; background: #F2B84B; box-shadow: 0 0 16px 6px rgba(242,184,75,0.4)"></div>
+    <div style="position: absolute; top: 30px; left: 260px; width: 10px; height: 16px; background: #F2B84B; box-shadow: 0 0 16px 6px rgba(242,184,75,0.4)"></div>
+    <div class="floor" style="position: absolute; left: 0; right: 0; top: 174px; bottom: 0"></div>
+    <div style="position: absolute; top: 16px; left: 14px; width: 150px; box-sizing: border-box; padding: 8px 10px; background: #16182A; border: 3px solid #E8835A; box-shadow: 3px 3px 0 #000">
+      <div style="font-family: 'Press Start 2P', monospace; font-size: 9px; color: #E8835A">RIVAL</div>
+      <div style="font-size: 16px; margin-top: 4px">Squire AI</div>
+      <div aria-label="Rival has 1 of 3 round wins" style="display: flex; gap: 6px; margin-top: 6px">
+        <div style="width: 16px; height: 16px; background: #E8835A"></div><div style="width: 16px; height: 16px; border: 2px solid #E8835A; box-sizing: border-box"></div><div style="width: 16px; height: 16px; border: 2px solid #E8835A; box-sizing: border-box"></div>
+      </div>
+    </div>
+    <div style="position: absolute; top: 196px; right: 34px; width: 120px; height: 20px; border-radius: 50%; background: #23233A"></div>
+    <img class="px" src="img/wizard-px.png" alt="Rival's Wizard" style="position: absolute; top: 60px; right: 56px; height: 144px; transform: scaleX(-1); filter: brightness(0.75) saturate(0.8)">
+    <div style="position: absolute; top: 116px; right: 150px; font-family: 'Press Start 2P', monospace; font-size: 16px; color: #F4EBD0; text-shadow: 2px 2px 0 #000">✕</div>
+    <div style="position: absolute; bottom: 18px; left: 30px; width: 140px; height: 22px; border-radius: 50%; background: #23233A"></div>
+    <img class="px" src="img/archer-px.png" alt="Your Archer" style="position: absolute; bottom: 26px; left: 64px; height: 192px">
+    <div style="position: absolute; bottom: 24px; right: 14px; width: 150px; box-sizing: border-box; padding: 8px 10px; background: #16182A; border: 3px solid #7FB3E8; box-shadow: 3px 3px 0 #000">
+      <div style="font-family: 'Press Start 2P', monospace; font-size: 9px; color: #7FB3E8">YOU</div>
+      <div style="font-size: 16px; margin-top: 4px">Jeff</div>
+      <div aria-label="You have 2 of 3 round wins" style="display: flex; gap: 6px; margin-top: 6px">
+        <div style="width: 16px; height: 16px; background: #7FB3E8"></div><div style="width: 16px; height: 16px; background: #7FB3E8"></div><div style="width: 16px; height: 16px; border: 2px solid #7FB3E8; box-sizing: border-box"></div>
+      </div>
+    </div>
+  </div>
+  <p aria-live="polite" style="margin: 0; padding: 14px 16px; min-height: 52px; box-sizing: border-box; background: #F4EBD0; color: #16182A; font-size: 19px; font-weight: 600; border-top: 4px solid #3B4163; border-bottom: 4px solid #3B4163">ARCHER shoots WIZARD — you win round 3!</p>
+  <div aria-label="Rules" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 8px; font-size: 15px; color: #C9C2AC">
+    <span>Knight</span><span style="color: #F2B84B">beats</span><span>Archer</span><span style="color: #F2B84B">beats</span><span>Wizard</span><span style="color: #F2B84B">beats</span><span>Knight</span>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 4px 12px 16px">
+    <a href="result.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; height: 150px; justify-content: flex-end; padding-bottom: 10px; box-sizing: border-box; background: #262A40; border: 3px solid #3B4163; color: #F4EBD0; text-decoration: none; box-shadow: 4px 4px 0 #0C0D18">
+      <img class="px" src="img/knight-px.png" alt="" style="height: 84px">
+      <span style="font-family: 'Press Start 2P', monospace; font-size: 10px">KNIGHT</span>
+      <span style="font-size: 14px; color: #C9C2AC">key 1</span>
+    </a>
+    <a href="result.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; height: 150px; justify-content: flex-end; padding-bottom: 10px; box-sizing: border-box; background: #262A40; border: 3px solid #F2B84B; color: #F4EBD0; text-decoration: none; box-shadow: 4px 4px 0 #0C0D18; outline: 3px solid #F2B84B; outline-offset: 3px">
+      <img class="px" src="img/archer-px.png" alt="" style="height: 84px">
+      <span style="font-family: 'Press Start 2P', monospace; font-size: 10px">ARCHER</span>
+      <span style="font-size: 14px; color: #C9C2AC">key 2</span>
+    </a>
+    <a href="result.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; height: 150px; justify-content: flex-end; padding-bottom: 10px; box-sizing: border-box; background: #262A40; border: 3px solid #3B4163; color: #F4EBD0; text-decoration: none; box-shadow: 4px 4px 0 #0C0D18">
+      <img class="px" src="img/wizard-px.png" alt="" style="height: 84px">
+      <span style="font-family: 'Press Start 2P', monospace; font-size: 10px">WIZARD</span>
+      <span style="font-size: 14px; color: #C9C2AC">key 3</span>
+    </a>
+  </div>
+</div>
+</body>
+</html>

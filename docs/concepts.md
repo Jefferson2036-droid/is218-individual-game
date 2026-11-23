@@ -19,10 +19,14 @@ Both are rock paper scissors games against a computer opponent.
 A third idea, **Five-Move Duel** (rock paper scissors lizard Spock), was dropped early: it cuts ties but makes players learn ten rules (sources 6–7).
 
 ## Decision
-**Chosen concept:** Concept B, Arena Climb. Decided 2026-11-13.
+**Chosen concept:** Concept B, Arena Climb. First chosen 2026-11-13; re-confirmed and narrowed 2026-11-23.
 
-**Why:** Rock paper scissors is a competitive game people use to settle things, and Pattern Reader gave players no reason to keep going. Arena Climb adds that reason: ranks to climb, a computer that gets harder as you win, and rewards for winning. It also uses every step of the required flow, because equipping gear is a real reason to update the account.
+**Why:** Rock paper scissors is a competitive game people use to settle things, and Pattern Reader gave players no reason to keep going. Arena Climb gives that reason: ranks to climb and a computer that gets harder as you win.
 
-**What I am giving up:** Pattern Reader's "how predictable am I?" idea. Part of it survives: the higher ranks use the same human-pattern research (win-stay, lose-shift) to make the computer harder.
+**Scope change (2026-11-23):** Coins and gear (buying, unlocking, equipping) are out of this term's promise and moved to the [backlog](backlog.md) for a future sprint. The rank climb stays. Reason: the required account → match → saved result → dashboard → account update journey has to work and be tested first; coins, a shop and gear would add a second system on top of it. Account update is now display name and password only, which is what the course requires.
+
+**What I am giving up:** Pattern Reader's "how predictable am I?" idea, and (for now) gear as a reward. Part of Pattern Reader survives: the higher ranks use the same human-pattern research (win-stay, lose-shift) to make the computer harder.
 
 **Known risk taken on:** Knight, Archer, Wizard rules are not as obvious as rock paper scissors. History shows confusing rules hurt these games (source 9: the mushi-ken slug). Response: the rule triangle is always shown on screen during a match.
+
+**Open question:** Without gear, is the next rank enough reason to play another match? This becomes the creative experiment (see experiment.md).

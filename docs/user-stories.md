@@ -1,12 +1,37 @@
 # Five user stories
 
-1. **Account.** As a new player, I want to create an account and log in, so that my rank and unlocks are saved.
-   - Accept: registering with a valid email and password creates a user at Recruit rank with 0 coins and the starter look; a duplicate email is rejected with a clear message; a wrong password does not log in.
-2. **Game.** As a logged-in player, I want to play a best-of-5 match of Knight, Archer, Wizard against the computer, so that I can win and climb.
-   - Accept: each round I pick one of three fighters and see the computer's pick and the round winner; the rule triangle is visible the whole match; the match ends when one side wins 3 rounds; my equipped gear is shown on my fighters.
-3. **Saved result.** As a player, I want my match result saved with my rank change and reward, so that every win moves me forward.
-   - Accept: finishing a match saves the outcome, rounds won/lost and coins earned; a win adds a star and a loss removes one (never below the current rank's floor); reaching the star target moves me up a rank and unlocks an item; leaving mid-match saves nothing.
-4. **Dashboard.** As a returning player, I want a dashboard of my progress, so that I can see how close I am to the next rank and unlock.
-   - Accept: the dashboard shows my rank, stars toward the next rank, coins, win rate, current streak, my last 10 matches newest first, and my gear collection; with no matches yet it shows a prompt to play.
-5. **Account update.** As a player, I want to equip gear I have unlocked and change my profile details, so that my fighters and account look the way I want.
-   - Accept: I can equip any unlocked item on its fighter and see it in my next match; I cannot equip locked items; I can buy an item if I have enough coins; I can change my display name; changing my password requires the current one.
+Rewritten 2026-11-23 for the narrowed promise (no coins or gear). Each check has an observable result so a test or a classmate can confirm it.
+
+**Unit of a saved result:** one finished best-of-5 **match**, not a round. Tied rounds are replayed, so a match always ends in a win or a loss; the dashboard therefore shows **wins and losses only** (no ties).
+
+## 1. Join and leave safely
+As a new player, I want to sign up, sign in and sign out, so that my climb is mine and stays private.
+- Signing up with a new username and password starts me at Recruit with 0 stars.
+- A duplicate username or a wrong password shows a clear error and does not sign me in.
+- After signing out, opening the dashboard or calling the data API is refused.
+
+## 2. Play a match
+As a signed-in player, I want to play a best-of-5 Knight/Archer/Wizard match against the computer, so that I can try to climb.
+- Each round shows both picks and the correct winner; the rule triangle is visible the whole match.
+- The server decides every round from my validated pick and the computer's pick; a browser claiming "I won" is ignored.
+- An invalid pick is rejected with a message; the match ends when one side reaches 3 round wins.
+- The match is playable on a phone without scrolling and with the keyboard only.
+
+## 3. Save the result and climb
+As a player, I want each finished match saved with its rank change, so that every win moves me forward.
+- A finished match saves win/loss, the round score, and rank and stars before and after.
+- A win adds 1 star; a loss removes 1 star but never drops below the floor of my current rank; reaching the star target moves me up a rank.
+- A match abandoned midway saves nothing and changes no stars.
+- The saved result is still there after a refresh and after signing in again.
+
+## 4. See my private dashboard
+As a returning player, I want a dashboard of my progress, so that I know how close the next rank is.
+- It shows stars to the next rank first, then rank, wins and losses, current win streak, and my last 10 matches newest first.
+- A brand-new player sees a "play your first match" message instead of empty tables.
+- Player B can never see or change player A's matches or account, even by changing an ID in a request.
+
+## 5. Maintain my account
+As a player, I want to change my display name and password, so that my account stays mine.
+- A new display name shows on the dashboard; a blank or too-long name is rejected.
+- Changing the password requires the current password; a wrong current password is rejected.
+- After a password change the old password fails, my other sessions are signed out, and the new password works.
