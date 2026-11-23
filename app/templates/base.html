@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{% block title %}Arena Climb{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ground: #16182A;
+      --panel: #262A40;
+      --border: #3B4163;
+      --text: #F4EBD0;
+      --muted: #C9C2AC;
+      --accent: #F2B84B;
+      --accent-shadow: #9C6B17;
+      --player: #7FB3E8;
+      --rival: #E8835A;
+      --wall: #2B2F45;
+      --floor: #3A3A4F;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--ground);
+      color: var(--text);
+      font-family: 'Pixelify Sans', system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: #FFD27A; }
+    .px { image-rendering: pixelated; }
+    .stone {
+      background-color: #2B2F45;
+      background-image: linear-gradient(#20233A 2px, transparent 2px), linear-gradient(90deg, #20233A 2px, transparent 2px);
+      background-size: 48px 24px;
+    }
+    .wall {
+      background-color: #2B2F45;
+      background-image: linear-gradient(#20233A 2px, transparent 2px), linear-gradient(90deg, #20233A 2px, transparent 2px);
+      background-size: 48px 24px;
+    }
+    .floor {
+      background-color: #3A3A4F;
+      background-image: linear-gradient(#2E2E42 2px, transparent 2px), linear-gradient(90deg, #2E2E42 2px, transparent 2px);
+      background-size: 32px 32px;
+    }
+    .flash-messages {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px 0;
+    }
+    .flash-message {
+      padding: 10px 12px;
+      font-size: 15px;
+      margin-bottom: 8px;
+      border: 2px solid var(--rival);
+      background: rgba(232, 131, 90, 0.15);
+      color: var(--rival);
+    }
+    .pixel-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: var(--ground);
+      border: none;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0 var(--accent-shadow);
+      transition: transform 0.1s;
+    }
+    .pixel-btn:hover {
+      background: #FFD27A;
+    }
+    .pixel-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--accent-shadow);
+    }
+    .pixel-btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .container {
+      width: 100%;
+      max-width: 390px;
+      min-height: 100vh;
+      background: var(--ground);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    nav.top-nav {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      background: var(--ground);
+      border-bottom: 3px solid var(--border);
+    }
+    nav.top-nav a {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 8px;
+      color: var(--text);
+      font-size: 17px;
+    }
+    nav.top-nav a.active {
+      color: var(--accent);
+      font-weight: 600;
+      border-bottom: 3px solid var(--accent);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Arena Climb – Match Details{% endblock %}
+
+{% block content %}
+<nav class="top-nav" aria-label="Main">
+  <a href="{{ url_for('play.play_screen') }}">Play</a>
+  <a href="{{ url_for('results.results_list') }}" class="active">Saved Results</a>
+  <a href="{{ url_for('auth.sign_out') }}">Sign out</a>
+</nav>
+
+<div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 18px 16px;">
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <h1 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 14px;">MATCH #{{ match.id }}</h1>
+    <span style="font-family: 'Press Start 2P', monospace; font-size: 11px; {% if match.status == 'won' %}color: var(--player);{% else %}color: var(--rival);{% endif %}">
+      {% if match.status == 'won' %}VICTORY{% else %}DEFEAT{% endif %}
+    </span>
+  </div>
+
+  <div style="padding: 16px; background: var(--panel); border: 3px solid var(--border); display: flex; flex-direction: column; gap: 8px;">
+    <div style="font-size: 18px;">
+      Final Score: <strong>{{ match.you }} – {{ match.cpu }}</strong> vs {{ opponent_rank }} AI
+    </div>
+    <div style="font-size: 16px; color: var(--muted);">
+      Stars change: <strong>{% if match.stars_change > 0 %}+{{ match.stars_change }}{% else %}{{ match.stars_change }}{% endif %}</strong>
+      (Rank: {{ rank_name(match.rank_at_start) }}{% if match.rank_after is not none and match.rank_after != match.rank_at_start %} → {{ rank_name(match.rank_after) }}{% endif %})
+    </div>
+  </div>
+
+  <section style="display: flex; flex-direction: column; gap: 6px;">
+    <h2 style="margin: 4px 0; font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--muted);">ROUND BREAKDOWN</h2>
+    {% for r in match.rounds %}
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: #1E2135; border: 2px solid #2E3350; font-size: 16px;">
+        <span>Round {{ r.n }}</span>
+        <span>{{ r.player_pick|capitalize }} vs {{ r.cpu_pick|capitalize }}</span>
+        <span style="font-family: 'Press Start 2P', monospace; font-size: 10px; {% if r.outcome == 'win' %}color: var(--player);{% elif r.outcome == 'lose' %}color: var(--rival);{% else %}color: var(--muted);{% endif %}">
+          {{ r.outcome|upper }}
+        </span>
+      </div>
+    {% endfor %}
+  </section>
+
+  <div style="margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 12px;">
+    <a href="{{ url_for('results.results_list') }}" style="display: flex; align-items: center; justify-content: center; height: 48px; border: 3px solid var(--border); color: var(--text); font-size: 16px;">BACK TO RESULTS</a>
+    <a href="{{ url_for('play.play_screen') }}" class="pixel-btn" style="height: 48px; text-decoration: none;">PLAY AGAIN</a>
+  </div>
+</div>
+{% endblock %}
