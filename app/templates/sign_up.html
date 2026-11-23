@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Arena Climb – Create account{% endblock %}
+
+{% block content %}
+<div style="flex: 1; display: flex; flex-direction: column;">
+  <div class="stone" style="height: 330px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 18px; padding: 0 24px; border-bottom: 4px solid var(--border); position: relative;">
+    <div style="position: absolute; top: 40px; left: 28px; width: 12px; height: 20px; background: var(--accent); box-shadow: 0 0 18px 6px rgba(242,184,75,0.45);"></div>
+    <div style="position: absolute; top: 40px; right: 28px; width: 12px; height: 20px; background: var(--accent); box-shadow: 0 0 18px 6px rgba(242,184,75,0.45);"></div>
+    <h1 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 30px; line-height: 1.25; text-align: center; color: var(--accent); text-shadow: 4px 4px 0 #16182A;">ARENA<br>CLIMB</h1>
+    <p style="margin: 0; font-size: 18px; text-align: center; color: var(--text);">Knight. Archer. Wizard. Climb the ranks.</p>
+    <div style="display: flex; align-items: flex-end; gap: 22px; margin-bottom: -4px;">
+      <img class="px" src="{{ url_for('static', filename='img/knight-px.png') }}" alt="Knight" style="height: 120px;">
+      <img class="px" src="{{ url_for('static', filename='img/archer-px.png') }}" alt="Archer" style="height: 120px;">
+      <img class="px" src="{{ url_for('static', filename='img/wizard-px.png') }}" alt="Wizard" style="height: 120px;">
+    </div>
+  </div>
+
+  <form method="POST" action="{{ url_for('auth.sign_up') }}" style="flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 32px 28px;">
+    {{ form.hidden_tag() }}
+    <h2 style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 14px; color: var(--text);">CREATE ACCOUNT</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for category, message in messages %}
+            <li class="flash-message">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <label for="username" style="display: flex; flex-direction: column; gap: 6px; font-size: 17px;">
+      Username
+      {{ form.username(id="username", style="height: 48px; padding: 0 14px; font-family: 'Pixelify Sans', sans-serif; font-size: 18px; color: var(--text); background: var(--panel); border: 3px solid var(--border); border-radius: 0; outline: none;") }}
+      {% for error in form.username.errors %}
+        <span style="color: var(--rival); font-size: 14px;">{{ error }}</span>
+      {% endfor %}
+    </label>
+
+    <label for="password" style="display: flex; flex-direction: column; gap: 6px; font-size: 17px;">
+      Password (min 6 characters)
+      {{ form.password(id="password", style="height: 48px; padding: 0 14px; font-family: 'Pixelify Sans', sans-serif; font-size: 18px; color: var(--text); background: var(--panel); border: 3px solid var(--border); border-radius: 0; outline: none;") }}
+      {% for error in form.password.errors %}
+        <span style="color: var(--rival); font-size: 14px;">{{ error }}</span>
+      {% endfor %}
+    </label>
+
+    <button type="submit" class="pixel-btn" style="height: 54px; margin-top: 8px;">JOIN THE CLIMB</button>
+    <p style="margin: 4px 0 0; font-size: 17px; text-align: center; color: var(--muted);">
+      Already have an account? <a href="{{ url_for('auth.sign_in') }}">Sign in</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

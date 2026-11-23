@@ -1,0 +1,569 @@
+{% extends "base.html" %}
+
+{% block title %}Arena Climb – Battle{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Sprite movement pixel steps */
+  .fighter-sprite {
+    image-rendering: pixelated;
+    transition: transform 0.2s steps(4), filter 0.2s steps(3), opacity 0.2s;
+  }
+  .player-sprite {
+    position: absolute;
+    bottom: 26px;
+    left: 64px;
+    height: 192px;
+  }
+  .rival-sprite {
+    position: absolute;
+    top: 60px;
+    right: 56px;
+    height: 144px;
+    transform: scaleX(-1);
+    filter: brightness(0.8) saturate(0.85);
+  }
+
+  /* Round squares */
+  .score-square {
+    width: 16px;
+    height: 16px;
+    box-sizing: border-box;
+    transition: transform 0.15s ease-out;
+  }
+  .score-square.empty-player { border: 2px solid var(--player); }
+  .score-square.filled-player { background: var(--player); }
+  .score-square.empty-rival { border: 2px solid var(--rival); }
+  .score-square.filled-rival { background: var(--rival); }
+  .score-pop { transform: scale(1.3); }
+
+  /* Animations */
+  @keyframes sendOutSlide {
+    0% { transform: translateX(-60px) scale(0.8); opacity: 0; }
+    100% { transform: translateX(0) scale(1); opacity: 1; }
+  }
+  @keyframes rivalFlipIn {
+    0% { transform: scaleX(-1) rotateY(90deg); opacity: 0; }
+    100% { transform: scaleX(-1) rotateY(0deg); opacity: 1; }
+  }
+  @keyframes playerLunge {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(60px, -40px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes rivalLunge {
+    0% { transform: scaleX(-1) translate(0, 0); }
+    50% { transform: scaleX(-1) translate(60px, 40px); }
+    100% { transform: scaleX(-1) translate(0, 0); }
+  }
+  @keyframes hitShakeFlash {
+    0% { transform: translate(0, 0); filter: brightness(3); }
+    20% { transform: translate(-8px, 6px); filter: brightness(1); }
+    40% { transform: translate(8px, -6px); filter: brightness(3); }
+    60% { transform: translate(-6px, -4px); filter: brightness(1); }
+    80% { transform: translate(4px, 4px); filter: brightness(1.5); }
+    100% { transform: translate(0, 0); filter: brightness(1); }
+  }
+  @keyframes knockoutFade {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(50px); opacity: 0; }
+  }
+  @keyframes modalPop {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes starPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); box-shadow: 0 0 12px var(--accent); }
+    100% { transform: scale(1); }
+  }
+
+  /* Command fighter button */
+  .pick-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 150px;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    background: var(--panel);
+    border: 3px solid var(--border);
+    color: var(--text);
+    box-shadow: 4px 4px 0 #0C0D18;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.08s, border-color 0.1s, outline 0.1s;
+  }
+  .pick-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+  }
+  .pick-btn:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 #0C0D18;
+  }
+  .pick-btn:focus-visible {
+    border-color: var(--accent);
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .pick-btn.selected {
+    border-color: var(--accent);
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .pick-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Result overlay */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 11, 20, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 50;
+  }
+  .modal-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 28px 22px 24px;
+    background: var(--ground);
+    border: 4px solid var(--accent);
+    box-shadow: 6px 6px 0 #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    animation: modalPop 0.2s ease-out;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<nav class="top-nav" aria-label="Main">
+  <a href="{{ url_for('play.play_screen') }}" class="active">Play</a>
+  <a href="{{ url_for('results.results_list') }}">Saved Results</a>
+  <form method="POST" action="{{ url_for('auth.sign_out') }}" style="margin: 0; display: inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" id="sign-out-btn" style="background: none; border: none; color: var(--text); font-family: inherit; font-size: 17px; height: 44px; padding: 0 8px; cursor: pointer;">Sign out</button>
+  </form>
+</nav>
+
+<!-- Rank & Score Bar -->
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--panel);">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span id="rank-name-badge" style="font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--accent);">{{ current_rank_name }}</span>
+    <span id="stars-visual" style="font-size: 18px; letter-spacing: 2px; color: var(--accent);" aria-label="{{ user.stars }} stars">
+      {% for _ in range(user.stars) %}★{% endfor %}{% if stars_needed %}{% for _ in range(stars_needed - user.stars) %}<span style="color: #565C80;">★</span>{% endfor %}{% endif %}
+    </span>
+  </div>
+  <span id="match-score-text" style="font-family: 'Press Start 2P', monospace; font-size: 11px;">YOU {{ match.you }} – {{ match.cpu }} RIVAL</span>
+</div>
+
+<!-- Arena Courtyard -->
+<div style="position: relative; height: 430px; overflow: hidden;" id="arena-stage">
+  <div class="wall" style="position: absolute; left: 0; right: 0; top: 0; height: 170px; border-bottom: 4px solid #1B1D2E;"></div>
+  <!-- Torches -->
+  <div style="position: absolute; top: 30px; left: 120px; width: 10px; height: 16px; background: var(--accent); box-shadow: 0 0 16px 6px rgba(242,184,75,0.4);"></div>
+  <div style="position: absolute; top: 30px; left: 260px; width: 10px; height: 16px; background: var(--accent); box-shadow: 0 0 16px 6px rgba(242,184,75,0.4);"></div>
+  <div class="floor" style="position: absolute; left: 0; right: 0; top: 174px; bottom: 0;"></div>
+
+  <!-- Rival Info Card -->
+  <div style="position: absolute; top: 16px; left: 14px; width: 150px; padding: 8px 10px; background: var(--ground); border: 3px solid var(--rival); box-shadow: 3px 3px 0 #000;">
+    <div style="font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--rival);">RIVAL</div>
+    <div style="font-size: 16px; margin-top: 4px;" id="rival-name">{{ current_rank_name }} AI</div>
+    <div style="display: flex; gap: 6px; margin-top: 6px;" id="rival-squares" aria-label="Rival has {{ match.cpu }} of 3 round wins">
+      <div class="score-square {% if match.cpu > 0 %}filled-rival{% else %}empty-rival{% endif %}" id="rival-sq-1"></div>
+      <div class="score-square {% if match.cpu > 1 %}filled-rival{% else %}empty-rival{% endif %}" id="rival-sq-2"></div>
+      <div class="score-square {% if match.cpu > 2 %}filled-rival{% else %}empty-rival{% endif %}" id="rival-sq-3"></div>
+    </div>
+  </div>
+
+  <!-- Rival Sprite -->
+  <div style="position: absolute; top: 196px; right: 34px; width: 120px; height: 20px; border-radius: 50%; background: #23233A;"></div>
+  <img id="rival-sprite" class="px fighter-sprite rival-sprite" src="{{ url_for('static', filename='img/wizard-px.png') }}" alt="Rival fighter">
+
+  <!-- Clashing indicator -->
+  <div id="clash-icon" style="position: absolute; top: 116px; right: 150px; font-family: 'Press Start 2P', monospace; font-size: 16px; color: var(--text); text-shadow: 2px 2px 0 #000; opacity: 0;">✕</div>
+
+  <!-- Player Sprite -->
+  <div style="position: absolute; bottom: 18px; left: 30px; width: 140px; height: 22px; border-radius: 50%; background: #23233A;"></div>
+  <img id="player-sprite" class="px fighter-sprite player-sprite" src="{{ url_for('static', filename='img/knight-px.png') }}" alt="Your fighter">
+
+  <!-- Player Info Card -->
+  <div style="position: absolute; bottom: 24px; right: 14px; width: 150px; padding: 8px 10px; background: var(--ground); border: 3px solid var(--player); box-shadow: 3px 3px 0 #000;">
+    <div style="font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--player);">YOU</div>
+    <div style="font-size: 16px; margin-top: 4px;">{{ user.display_name }}</div>
+    <div style="display: flex; gap: 6px; margin-top: 6px;" id="player-squares" aria-label="You have {{ match.you }} of 3 round wins">
+      <div class="score-square {% if match.you > 0 %}filled-player{% else %}empty-player{% endif %}" id="player-sq-1"></div>
+      <div class="score-square {% if match.you > 1 %}filled-player{% else %}empty-player{% endif %}" id="player-sq-2"></div>
+      <div class="score-square {% if match.you > 2 %}filled-player{% else %}empty-player{% endif %}" id="player-sq-3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Round announcement typewriter line -->
+<p id="round-narrative" aria-live="polite" style="margin: 0; padding: 14px 16px; min-height: 52px; background: var(--text); color: var(--ground); font-size: 19px; font-weight: 600; border-top: 4px solid var(--border); border-bottom: 4px solid var(--border);">
+  Choose Knight, Archer, or Wizard to begin!
+</p>
+
+<!-- Rule reminder triangle -->
+<div aria-label="Rules" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 8px; font-size: 15px; color: var(--muted);">
+  <span>Knight</span><span style="color: var(--accent);">beats</span>
+  <span>Archer</span><span style="color: var(--accent);">beats</span>
+  <span>Wizard</span><span style="color: var(--accent);">beats</span>
+  <span>Knight</span>
+</div>
+
+<!-- Command Menu Fighter Buttons -->
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 4px 12px 16px;">
+  <button type="button" class="pick-btn" data-pick="knight" id="btn-knight" aria-label="Pick Knight (key 1)">
+    <img class="px" src="{{ url_for('static', filename='img/knight-px.png') }}" alt="" style="height: 84px;">
+    <span style="font-family: 'Press Start 2P', monospace; font-size: 10px;">KNIGHT</span>
+    <span style="font-size: 14px; color: var(--muted);">key 1</span>
+  </button>
+  <button type="button" class="pick-btn" data-pick="archer" id="btn-archer" aria-label="Pick Archer (key 2)">
+    <img class="px" src="{{ url_for('static', filename='img/archer-px.png') }}" alt="" style="height: 84px;">
+    <span style="font-family: 'Press Start 2P', monospace; font-size: 10px;">ARCHER</span>
+    <span style="font-size: 14px; color: var(--muted);">key 2</span>
+  </button>
+  <button type="button" class="pick-btn" data-pick="wizard" id="btn-wizard" aria-label="Pick Wizard (key 3)">
+    <img class="px" src="{{ url_for('static', filename='img/wizard-px.png') }}" alt="" style="height: 84px;">
+    <span style="font-family: 'Press Start 2P', monospace; font-size: 10px;">WIZARD</span>
+    <span style="font-size: 14px; color: var(--muted);">key 3</span>
+  </button>
+</div>
+
+<!-- Match Result Modal Overlay -->
+<div class="modal-overlay" id="result-modal" role="dialog" aria-modal="true" aria-labelledby="res-title">
+  <div class="modal-card">
+    <h2 id="res-title" style="margin: 0; font-family: 'Press Start 2P', monospace; font-size: 24px; color: var(--accent); text-shadow: 3px 3px 0 #000;">VICTORY!</h2>
+    <p id="res-score-summary" style="margin: 0; font-size: 20px;">You won <strong>3 – 1</strong> against Squire AI</p>
+
+    <!-- Version B Nudge Block (omitted in Version A) -->
+    <div id="version-b-nudge" style="{% if user.experiment_version != 'B' %}display: none;{% endif %} width: 100%; padding: 14px; background: var(--panel); border: 3px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <div id="stars-change-label" style="font-size: 16px; color: var(--muted);">+1 star</div>
+      <div id="stars-bar-container" style="display: flex; gap: 8px;">
+        <!-- Dynamically rendered stars -->
+      </div>
+      <div id="nudge-text" style="font-family: 'Press Start 2P', monospace; font-size: 11px; line-height: 1.6; text-align: center; color: var(--accent);">
+        1 STAR TO<br>NEXT RANK!
+      </div>
+    </div>
+
+    <button type="button" id="play-again-btn" class="pixel-btn" style="width: 100%; height: 58px; margin-top: 6px; outline: 3px solid var(--text); outline-offset: 4px;">PLAY AGAIN</button>
+    <a href="{{ url_for('results.results_list') }}" id="modal-results-btn" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 50px; border: 3px solid var(--border); color: var(--text); font-size: 18px;">Saved Results</a>
+  </div>
+</div>
+
+<script>
+(() => {
+  let currentMatchId = {{ match.id }};
+  let userRank = {{ user.rank }};
+  let userStars = {{ user.stars }};
+  let expVersion = "{{ user.experiment_version }}";
+  let youScore = {{ match.you }};
+  let cpuScore = {{ match.cpu }};
+  let isResolving = false;
+  let typingTimer = null;
+
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const spriteMap = {
+    knight: "{{ url_for('static', filename='img/knight-px.png') }}",
+    archer: "{{ url_for('static', filename='img/archer-px.png') }}",
+    wizard: "{{ url_for('static', filename='img/wizard-px.png') }}"
+  };
+
+  const pickButtons = document.querySelectorAll('.pick-btn');
+  const narrative = document.getElementById('round-narrative');
+  const playerSprite = document.getElementById('player-sprite');
+  const rivalSprite = document.getElementById('rival-sprite');
+  const clashIcon = document.getElementById('clash-icon');
+  const resultModal = document.getElementById('result-modal');
+  const playAgainBtn = document.getElementById('play-again-btn');
+
+  function typeText(text, callback) {
+    if (typingTimer) clearInterval(typingTimer);
+    narrative.textContent = '';
+    let idx = 0;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      narrative.textContent = text;
+      if (callback) callback();
+      return;
+    }
+    typingTimer = setInterval(() => {
+      if (idx < text.length) {
+        narrative.textContent += text.charAt(idx);
+        idx++;
+      } else {
+        clearInterval(typingTimer);
+        typingTimer = null;
+        if (callback) callback();
+      }
+    }, 20);
+  }
+
+  function skipTyping() {
+    if (typingTimer) {
+      clearInterval(typingTimer);
+      typingTimer = null;
+    }
+  }
+
+  function updateScoreSquares(you, cpu) {
+    for (let i = 1; i <= 3; i++) {
+      const pSq = document.getElementById(`player-sq-${i}`);
+      const rSq = document.getElementById(`rival-sq-${i}`);
+      if (i <= you) {
+        pSq.className = 'score-square filled-player';
+      } else {
+        pSq.className = 'score-square empty-player';
+      }
+      if (i <= cpu) {
+        rSq.className = 'score-square filled-rival';
+      } else {
+        rSq.className = 'score-square empty-rival';
+      }
+    }
+    document.getElementById('match-score-text').textContent = `YOU ${you} – ${cpu} RIVAL`;
+  }
+
+  async function submitPick(pick) {
+    if (isResolving) return;
+    isResolving = true;
+    skipTyping();
+
+    // Visual button selection
+    pickButtons.forEach(btn => {
+      btn.disabled = true;
+      if (btn.dataset.pick === pick) {
+        btn.classList.add('selected');
+      } else {
+        btn.classList.remove('selected');
+      }
+    });
+
+    // 1. Send-out slide (200 ms)
+    playerSprite.src = spriteMap[pick];
+    playerSprite.style.animation = 'sendOutSlide 0.2s steps(4) forwards';
+
+    try {
+      const resp = await fetch(`/play/${currentMatchId}/pick`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ pick: pick })
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json();
+        narrative.textContent = err.error || 'Error processing pick.';
+        isResolving = false;
+        pickButtons.forEach(b => b.disabled = false);
+        return;
+      }
+
+      const data = await resp.json();
+      const round = data.round;
+      youScore = data.score.you;
+      cpuScore = data.score.cpu;
+
+      // 2. Rival pick flips in (200 ms)
+      setTimeout(() => {
+        rivalSprite.src = spriteMap[round.cpu_pick];
+        rivalSprite.style.animation = 'rivalFlipIn 0.2s steps(4) forwards';
+        clashIcon.style.opacity = '1';
+
+        // 3. Attack lunge & Hit shake/flash (250 ms & 300 ms)
+        setTimeout(() => {
+          if (round.outcome === 'win') {
+            playerSprite.style.animation = 'playerLunge 0.25s steps(4)';
+            setTimeout(() => {
+              rivalSprite.style.animation = 'hitShakeFlash 0.3s steps(4)';
+            }, 100);
+          } else if (round.outcome === 'lose') {
+            rivalSprite.style.animation = 'rivalLunge 0.25s steps(4)';
+            setTimeout(() => {
+              playerSprite.style.animation = 'hitShakeFlash 0.3s steps(4)';
+            }, 100);
+          }
+
+          // 4. Update round score square & type narrative
+          setTimeout(() => {
+            clashIcon.style.opacity = '0';
+            updateScoreSquares(youScore, cpuScore);
+
+            let msg = '';
+            const pUpper = round.player_pick.toUpperCase();
+            const cUpper = round.cpu_pick.toUpperCase();
+
+            if (round.outcome === 'win') {
+              msg = `${pUpper} beats ${cUpper} — you win round ${round.n}!`;
+            } else if (round.outcome === 'lose') {
+              msg = `${cUpper} beats ${pUpper} — rival wins round ${round.n}!`;
+            } else {
+              msg = `Both picked ${pUpper} — round tied! Replaying...`;
+            }
+
+            typeText(msg, () => {
+              // 5. Match Over check
+              if (data.over) {
+                setTimeout(() => {
+                  showMatchResult(data);
+                }, 400);
+              } else {
+                isResolving = false;
+                pickButtons.forEach(btn => {
+                  btn.disabled = false;
+                  btn.classList.remove('selected');
+                });
+              }
+            });
+          }, 450);
+        }, 220);
+      }, 200);
+
+    } catch (e) {
+      console.error(e);
+      narrative.textContent = 'Connection error. Please try again.';
+      isResolving = false;
+      pickButtons.forEach(b => b.disabled = false);
+    }
+  }
+
+  function showMatchResult(data) {
+    const resTitle = document.getElementById('res-title');
+    const resScore = document.getElementById('res-score-summary');
+    const rivalName = document.getElementById('rival-name').textContent;
+
+    if (data.won) {
+      resTitle.textContent = 'VICTORY!';
+      resTitle.style.color = 'var(--accent)';
+      rivalSprite.style.animation = 'knockoutFade 0.4s forwards';
+    } else {
+      resTitle.textContent = 'DEFEAT!';
+      resTitle.style.color = 'var(--rival)';
+      playerSprite.style.animation = 'knockoutFade 0.4s forwards';
+    }
+
+    resScore.innerHTML = `You ${data.won ? 'won' : 'lost'} <strong>${data.score.you} – ${data.score.cpu}</strong> against ${rivalName}`;
+
+    // A/B Experiment Handling
+    const nudgeBlock = document.getElementById('version-b-nudge');
+    if (data.player.experiment_version === 'B') {
+      nudgeBlock.style.display = 'flex';
+      const label = document.getElementById('stars-change-label');
+      label.textContent = data.stars_change >= 0 ? `+${data.stars_change} star` : `${data.stars_change} star`;
+
+      const barContainer = document.getElementById('stars-bar-container');
+      barContainer.innerHTML = '';
+      const totalNeeded = data.player.stars_needed;
+      const currentStars = data.player.stars;
+
+      if (totalNeeded) {
+        for (let i = 0; i < totalNeeded; i++) {
+          const starEl = document.createElement('div');
+          starEl.style.width = '36px';
+          starEl.style.height = '36px';
+          if (i < currentStars) {
+            starEl.style.background = 'var(--accent)';
+            starEl.style.boxShadow = '3px 3px 0 var(--accent-shadow)';
+            if (i === currentStars - 1 && data.won) {
+              starEl.style.animation = 'starPulse 0.5s ease-out';
+            }
+          } else {
+            starEl.style.border = '3px dashed var(--accent)';
+            starEl.style.boxSizing = 'border-box';
+          }
+          barContainer.appendChild(starEl);
+        }
+        const remaining = totalNeeded - currentStars;
+        document.getElementById('nudge-text').innerHTML = `${remaining} STAR${remaining === 1 ? '' : 'S'} TO<br>${getNextRankName(data.player.rank).toUpperCase()}!`;
+      } else {
+        // Champion rank
+        document.getElementById('nudge-text').innerHTML = `CHAMPION RANK<br>${currentStars} TOTAL STARS!`;
+      }
+    } else {
+      nudgeBlock.style.display = 'none';
+    }
+
+    resultModal.style.display = 'flex';
+    playAgainBtn.focus();
+  }
+
+  function getNextRankName(rank) {
+    const ranks = ["Recruit", "Squire", "Knight-Captain", "Champion"];
+    return ranks[Math.min(rank + 1, ranks.length - 1)];
+  }
+
+  async function startNewMatch() {
+    try {
+      const resp = await fetch('/play/start', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        }
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        currentMatchId = data.match_id;
+        youScore = 0;
+        cpuScore = 0;
+        updateScoreSquares(0, 0);
+        resultModal.style.display = 'none';
+        isResolving = false;
+        pickButtons.forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('selected');
+        });
+        playerSprite.style.animation = '';
+        rivalSprite.style.animation = '';
+        typeText('Choose Knight, Archer, or Wizard to begin!');
+      }
+    } catch (e) {
+      console.error(e);
+      window.location.reload();
+    }
+  }
+
+  // Button clicks
+  pickButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      submitPick(btn.dataset.pick);
+    });
+  });
+
+  playAgainBtn.addEventListener('click', () => {
+    startNewMatch();
+  });
+
+  // Keyboard navigation: 1 (Knight), 2 (Archer), 3 (Wizard), Enter
+  window.addEventListener('keydown', (e) => {
+    if (resultModal.style.display === 'flex') {
+      if (e.key === 'Enter') {
+        startNewMatch();
+      }
+      return;
+    }
+    if (e.key === '1') {
+      submitPick('knight');
+    } else if (e.key === '2') {
+      submitPick('archer');
+    } else if (e.key === '3') {
+      submitPick('wizard');
+    } else if (e.key === 'Enter') {
+      skipTyping();
+    }
+  });
+})();
+</script>
+{% endblock %}

@@ -1,16 +1,17 @@
 import os
+import pytest
 
-# Must be set before the app is imported: tests use a throwaway in-memory database.
-os.environ["DATABASE_URL"] = "sqlite://"
-os.environ["SECRET_KEY"] = "test-secret-key-that-is-long-enough-for-hs256-0123456789"
+# Ensure test environment settings
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+os.environ["SECRET_KEY"] = "test-secret-key-that-is-long-enough-for-testing"
 
 
 class FixedRng:
     """Stands in for random.Random so the computer's picks are predictable in tests."""
 
     def __init__(self, index=0, roll=0.99):
-        self.index = index   # which fighter a "random" pick returns (0 knight, 1 archer, 2 wizard)
-        self.roll = roll     # value of random(); 0.99 means "never try to predict"
+        self.index = index
+        self.roll = roll
 
     def random(self):
         return self.roll
@@ -19,24 +20,27 @@ class FixedRng:
         return self.index % n
 
 
-import pytest  # noqa: E402
+@pytest.fixture
+def app():
+    from app import create_app
+    from app.extensions import db
+
+    test_app = create_app(
+        {
+            "TESTING": True,
+            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+            "WTF_CSRF_ENABLED": False,
+            "SECRET_KEY": "test-secret-key",
+        }
+    )
+
+    with test_app.app_context():
+        db.create_all()
+        yield test_app
+        db.session.remove()
+        db.drop_all()
 
 
 @pytest.fixture
-def client():
-    """A test client with an empty database and a computer that always sends Knight."""
-    pytest.importorskip("fastapi")
-    pytest.importorskip("sqlalchemy")
-    pytest.importorskip("httpx")
-    from fastapi.testclient import TestClient
-
-    from app.db import Base, engine
-    from app.deps import get_rng
-    from app.main import app
-
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    app.dependency_overrides[get_rng] = lambda: FixedRng(index=0)
-    with TestClient(app) as test_client:
-        yield test_client
-    app.dependency_overrides.clear()
+def client(app):
+    return app.test_client()

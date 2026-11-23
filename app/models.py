@@ -1,67 +1,74 @@
-"""Database tables."""
+"""SQLAlchemy database models for Arena Climb."""
 
 from datetime import datetime, timezone
-from typing import Optional
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from flask_login import UserMixin
+from werkzeug.security import check_password_hash, generate_password_hash
 
-from .db import Base
+from .extensions import db
 
 
 def now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
 
-class User(Base):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String(254), unique=True, index=True)
-    password_hash: Mapped[str] = mapped_column(String(255))
-    display_name: Mapped[str] = mapped_column(String(40))
-    rank: Mapped[int] = mapped_column(Integer, default=0)
-    stars: Mapped[int] = mapped_column(Integer, default=0)
-    coins: Mapped[int] = mapped_column(Integer, default=0)
-    streak: Mapped[int] = mapped_column(Integer, default=0)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(40), unique=True, nullable=False, index=True)
+    password_hash = db.Column(db.String(255), nullable=False)
+    display_name = db.Column(db.String(40), nullable=False)
+    rank = db.Column(db.Integer, default=0, nullable=False)
+    stars = db.Column(db.Integer, default=0, nullable=False)
+    streak = db.Column(db.Integer, default=0, nullable=False)
+    auth_version = db.Column(db.Integer, default=1, nullable=False)
+    experiment_version = db.Column(db.String(1), default="A", nullable=False)  # 'A' or 'B'
+    created_at = db.Column(db.DateTime(timezone=True), default=now_utc, nullable=False)
+
+    def set_password(self, password: str):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password_hash, password)
 
 
-class Match(Base):
-    """A match. Finished matches (status "won" or "lost") are the saved results."""
+class LoginSession(db.Model):
+    __tablename__ = "login_sessions"
 
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    auth_version = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=now_utc, nullable=False)
+
+
+class Match(db.Model):
     __tablename__ = "matches"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    status: Mapped[str] = mapped_column(String(12), default="active", index=True)  # active | won | lost | abandoned
-    you: Mapped[int] = mapped_column(Integer, default=0)   # rounds the player has won
-    cpu: Mapped[int] = mapped_column(Integer, default=0)   # rounds the computer has won
-    rounds: Mapped[list] = mapped_column(JSON, default=list)
-    rank_at_start: Mapped[int] = mapped_column(Integer, default=0)
-    stars_change: Mapped[int] = mapped_column(Integer, default=0)
-    coins_earned: Mapped[int] = mapped_column(Integer, default=0)
-    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
-    finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    status = db.Column(db.String(16), default="in_progress", nullable=False, index=True)  # in_progress | won | lost
+    you = db.Column(db.Integer, default=0, nullable=False)
+    cpu = db.Column(db.Integer, default=0, nullable=False)
+    rank_at_start = db.Column(db.Integer, default=0, nullable=False)
+    stars_at_start = db.Column(db.Integer, default=0, nullable=False)
+    rank_after = db.Column(db.Integer, nullable=True)
+    stars_after = db.Column(db.Integer, nullable=True)
+    stars_change = db.Column(db.Integer, default=0, nullable=False)
+    started_at = db.Column(db.DateTime(timezone=True), default=now_utc, nullable=False)
+    finished_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+    rounds = db.relationship("Round", backref="match", cascade="all, delete-orphan", order_by="Round.n")
 
 
-class Unlock(Base):
-    """Gear a player owns."""
+class Round(db.Model):
+    __tablename__ = "rounds"
 
-    __tablename__ = "unlocks"
-    __table_args__ = (UniqueConstraint("user_id", "item_id", name="uq_unlock_user_item"),)
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    item_id: Mapped[str] = mapped_column(String(40))
-    unlocked_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now_utc)
-
-
-class Loadout(Base):
-    """The gear a player has equipped on each fighter (used by the armory, a later step)."""
-
-    __tablename__ = "loadouts"
-
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
-    fighter: Mapped[str] = mapped_column(String(12), primary_key=True)
-    item_id: Mapped[str] = mapped_column(String(40))
+    id = db.Column(db.Integer, primary_key=True)
+    match_id = db.Column(db.Integer, db.ForeignKey("matches.id", ondelete="CASCADE"), nullable=False, index=True)
+    n = db.Column(db.Integer, nullable=False)
+    player_pick = db.Column(db.String(12), nullable=False)
+    cpu_pick = db.Column(db.String(12), nullable=False)
+    outcome = db.Column(db.String(8), nullable=False)  # win | lose | tie
+    predicted = db.Column(db.String(12), nullable=True)
+    created_at = db.Column(db.DateTime(timezone=True), default=now_utc, nullable=False)
