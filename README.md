@@ -9,17 +9,19 @@ Repository: https://github.com/Jefferson2036-droid/is218-individual-game
 
 ## Run it
 
-**With Docker (API + PostgreSQL):**
-```
-docker compose up --build
-```
-Then open **http://localhost:8000** to play. The API's own test page is at http://localhost:8000/docs.
-
-**Run the tests (no Docker needed):**
-```
+**Run with Flask locally:**
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
+pip install -r requirements.txt
+flask --app app run --port 8000
+```
+Then open **http://localhost:8000** to play.
+
+**Run the tests:**
+```bash
 pip install -r requirements-dev.txt
+playwright install --with-deps chromium
 pytest
 ```
 

@@ -3,6 +3,29 @@
 One entry per working session. Link the issue, the change (commit or PR) and the check.
 Never write that a check passed unless it was run; write "NOT RUN — reason".
 
+## 2026-11-23 — Review 2: First Working Slice (Flask rebuild & Strategy pattern)
+**Changed:** Built the first working slice for Review 2 on branch `review-2-slice` (AI-assisted with Antigravity):
+- Replaced the legacy FastAPI layer with Flask (`app/__init__.py`, `app/models.py`, `app/forms.py`, `app/views/auth.py`, `app/views/play.py`, `app/views/results.py`).
+- Removed coins and items (`app/game/items.py` removed; coin fields purged from `app/game/progression.py`). Preserved ranks, stars, floor rule, and win streaks.
+- Implemented the Strategy pattern in `app/game/opponent.py` (`RandomStrategy`, `WinStayLoseShiftStrategy`, `PredictorStrategy`, `ChampionStrategy`) with a rank factory. Preserved procedural baseline in `app/game/opponent_baseline.py` and documented findings in `docs/pattern-experiment.md`.
+- Implemented accounts (sign up, sign in, sign out) with Flask-Login, Werkzeug password hashing, and Flask-WTF CSRF protection. Randomly assigned experiment version A or B per account.
+- Implemented server-authoritative best-of-5 match engine (`POST /play/start`, `POST /play/<match_id>/pick`) storing every round in `rounds` and saving finished matches in `matches`.
+- Implemented saved results (`GET /results`, `GET /results/<match_id>`) for reopening finished matches.
+- Created retro pixel courtyard UI matching mockups with snappy 2s round animations, keyboard navigation (1/2/3, Enter), and result modal (version B nudge vs version A control).
+- Added `.github/workflows/tests.yml` for automated CI on push and pull requests.
+- Updated `README.md` with Flask execution commands.
+**Checked:**
+- Full test suite passed locally: `pytest` — 51 passed, 1 warning (deprecation notice about pytest fixture inheritance) in 7.97s:
+  - 12 unit tests in `tests/test_rules.py` (all 9 matchups, counters, validation) — PASSED
+  - 8 unit tests in `tests/test_progression.py` (stars, streak bonus, rank floor, promotion) — PASSED
+  - 15 unit tests in `tests/test_opponent.py` (all strategies, factory mapping, bounds clamping) — PASSED
+  - 6 unit tests in `tests/test_match.py` (best-of-5 match rules, simulation) — PASSED
+  - 9 integration tests in `tests/test_flask_integration.py` (auth, duplicate username rejection, wrong password rejection, full match saved, abandoned match exclusion, server-authority over client results, cross-user 404 isolation, session persistence) — PASSED
+  - 1 Playwright browser journey test in `tests/test_browser.py` (sign up, play match with keyboard 1/2/3, result modal, view /results, sign out on 375px mobile viewport) — PASSED
+- Playtest with classmates — NOT RUN.
+- Partner review — NOT RUN.
+**Next:** Push branch `review-2-slice`, open pull request to merge into `main`, and verify GitHub Actions green run.
+
 ## 2026-11-23 — Plan re-done, scope narrowed, stack changed to Flask
 **Changed:** Re-did the Plan one decision at a time. Kept Arena Climb but cut coins, gear and the armory to a new backlog. Compared two audiences (A: 2048-style quick competitor, B1: Wordle-style daily player) and chose A. Wrote Dream / Working Promise; chose the "almost there" A/B nudge as the creative experiment and Strategy vs if/else as the pattern experiment. Changed the stack to Flask + Flask-Login because the first build's hand-made scrypt/JWT auth did not meet the "supported authentication component" rule. Rewrote the five stories (a saved result is one match; dashboard shows wins and losses only), flow and architecture (in-progress match in the database, rounds table). Planned keyboard, phone and privacy checks; chose GoatCounter and matches-per-session. Options laid out with Claude; I made each choice.
 **Checked:** Plan docs only; no code changed. Partner review — NOT RUN. Playtest — NOT RUN. GoatCounter and Plausible pricing — NOT CHECKED on their sites.
